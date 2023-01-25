@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<main>
+    <section class="py-5 text-center container">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-light">{{shelf}}</h1>
+          <p class="lead text-muted">Представляем коллекцию вин, отобранную со вкусом и знанием своего дела</p>
+          <a href="{% url "home" %}" class="btn btn-primary my-2">Назад</a>
+        </div>
+      </div>
+    </section>
+    
+    <div class="container">
+      <div class="card-deck ">
+        <div class="row mb-5">
+          <div class="container">
+          </div>
+            {% for wine in wines %}
+                <div class="card mb-4" style="width: 20rem;">
+                    <img class="card-img-top" src="{{wine.wine_image.url}}" alt="Card image cap" style="width: 180px; height: 350px;object-fit:contain;margin: auto">
+                    <div class="card-body">
+                        <h5 class="card-title">{{wine}}</h5>
+                        <p class="card-text">{{wine.taste}}</p>
+                        <a href="{% url "show_wine" wine.wine_id %}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        </div>
+    </div>
+
+   
+</main>  
+{% endblock %}

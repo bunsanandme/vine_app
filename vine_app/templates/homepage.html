@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<main>
+    <section class="py-5 text-center container">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+          <h1 class="fw-light">Ваши винные полки</h1>
+          <p class="lead text-muted">Представляем коллекцию вин, отобранную со вкусом и знанием своего дела</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="card-deck ">
+        <div class="row mb-5">
+          {% for shelf in shelfs %}
+          
+            <div class="card mb-4" style="width: 20rem;">
+              <a href="{% url "show_shelf" shelf.shelf_id %}">
+              <div class="card-body">
+                  <h5 class="card-title">{{shelf}}</h5>
+                  <p class="card-text"></p>
+              </div>
+            </a>
+            </div>
+          
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+   
+</main>  
+{% endblock %}

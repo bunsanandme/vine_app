@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title">Новая карточка вина</h5>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-success" name="submit_form">Создать</button>
+        </form>
+        <form method="post" enctype="multipart/form-data">
+            Или загрузите из файла docx, а мы заполним все остальное<br>
+            {% csrf_token %}
+            {{form_uf.as_p}}
+            <button type="submit" class="btn btn-success" name="upload_file">Загрузить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

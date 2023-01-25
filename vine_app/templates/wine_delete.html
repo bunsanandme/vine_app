@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+ 
+{% block content %}
+    <h1>Удалить вино из коллекции</h1>
+    <form action="" method="post">{% csrf_token %}
+      <p>Вы уверены, что хотите удалить {{wine}} </p>
+      <input type="submit" value="Да, удалить карточку" />
+    </form>
+{% endblock content %}
