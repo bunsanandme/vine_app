@@ -11,13 +11,13 @@ urlpatterns = [
     path("wine/<int:wine_id>", views.show_wine, name="show_wine"),
     path("shelf/<int:shelf_id>", views.show_shelf, name="show_shelf"),
     path("register/", views.register, name="register"),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('login/', views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
     path('profile/', views.profile, name="profile"),
     path("wine/create/", views.create_wine, name="wine_create"),
     path("wine/edit/<int:wine_id>", views.WineUpdateView.as_view(template_name='wine_edit.html'), name="wine_edit"),
     path("wine/delete/<int:wine_id>", views.WineDeleteView.as_view(template_name='wine_delete.html'), name="wine_delete"),
-    
+    path("test/", views.test, name="test")
 ]
 
 

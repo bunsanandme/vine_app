@@ -1,9 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm 
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from vine_app import models
 from django.forms import ModelForm
+from django.forms.widgets import FileInput
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -15,7 +15,7 @@ class UserRegisterForm(UserCreationForm):
 class WineForm(ModelForm):
     class Meta:
         model = models.Wine
-        fields = ('shelf_id', 'winery', 'crop_year', 'region', 'fragrance', 'taste', 'fun_facts', 'wine_image')
+        fields = ('shelf_id', 'wine_name', 'winery', 'crop_year', 'grape', 'region', 'fragrance', 'taste', 'fun_facts', 'wine_image')
 
 class FileUploadForm(forms.Form):
-    file = forms.FileField()
+    file = forms.FileField(widget=FileInput())

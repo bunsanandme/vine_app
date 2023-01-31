@@ -1,151 +1,118 @@
-<!doctype html>
-<html lang="en">
+{% load static %}
+<!DOCTYPE html>
+<html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Винный погреб</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-social@2/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'styles.css' %}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .dropdown-menu {
+      opacity: 0;
+      animation: ani 1.0s forwards;
+    }
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-
-    <link rel="apple-touch-icon" href="/docs/5.2/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-    <link rel="icon" href="/docs/5.2/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="/docs/5.2/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="/docs/5.2/assets/img/favicons/manifest.json">
-    <link rel="mask-icon" href="/docs/5.2/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
-    <link rel="icon" href="/docs/5.2/assets/img/favicons/favicon.ico">
-    <meta name="theme-color" content="#712cf9">
-
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-
-      .b-example-divider {
-        height: 3rem;
-        background-color: rgba(0, 0, 0, .1);
-        border: solid rgba(0, 0, 0, .15);
-        border-width: 1px 0;
-        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-      }
-
-      .b-example-vr {
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 100vh;
-      }
-
-      .bi {
-        vertical-align: -.125em;
-        fill: currentColor;
-      }
-
-      .nav-scroller {
-        position: relative;
-        z-index: 2;
-        height: 2.75rem;
-        overflow-y: hidden;
-      }
-
-      .nav-scroller .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        padding-bottom: 1rem;
-        margin-top: -1px;
-        overflow-x: auto;
-        text-align: center;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-    </style>
+    @keyframes ani {
+      0% {opacity: 0;}
+      100% {opacity: 1;}
+    }
+  </style>
   </head>
-  <body>  
-    <header>
-      <div class="navbar navbar-dark bg-dark shadow-sm">
-        <div class="container">
-          <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center">
-            <strong>🥂Винный погреб</strong>
+
+  <body>
+    <div class="container" id="navbar-container">
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="{% url 'home' %}">
+            <img src="{% static 'logo.png' %}" />
+          </a>
+
+          <a
+            role="button"
+            class="navbar-burger"
+            aria-label="menu"
+            aria-expanded="false"
+            data-target="navbarBasicExample"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
           </a>
         </div>
-      </div>
-    </header>
-    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
-      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-        <span class="fs-4">{{user.username}}</span>
-      </a>
-      <hr>
-      <ul class="nav nav-pills flex-column mb-auto">
-        <li class="nav-item">
-          <a href="{% url 'home' %}" class="nav-link active" aria-current="page">
-            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-            Главная
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'profile' %}" class="nav-link link-dark">
-            <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-            Профиль сомелье
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'register' %}" class="nav-link link-dark">
-            <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-            Регистрация
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'login' %}" class="nav-link link-dark">
-            <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-            Войти
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'logout' %}" class="nav-link link-dark">
-            <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-            Выйти из профиля
-          </a>
-        </li>
-      </ul>
-      </div>
 
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}  
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-start"></div>
+
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <a class="navbar-item" href="{% url 'home' %}"> Главная </a>
+              <a class="navbar-item" href="{% url 'home' %}"> Полки</a>
+              <a class="navbar-item" href="{% url 'home' %}"> Статистика </a>
+              <div class="buttons">
+                {% if user.is_authenticated %}
+                <div class="dropdown">
+                  <div class="dropdown-trigger">
+                    <button class="button is-wine" aria-haspopup="true" aria-controls="dropdown-menu" >
+                      <span>{{ user.username }}</span>
+                      <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                  </div>
+                  <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                      <a href="{% url 'profile' %}" class="dropdown-item">
+                        Профиль
+                      </a>
+                      <a href="{% url 'wine_create' %}" class="dropdown-item" >
+                        Добавить вина
+                      </a>
+                      <hr class="dropdown-divider">
+                      <a href="{% url 'logout' %}" class="dropdown-item">
+                        Выйти
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                {% else %}
+                <a href="{% url 'login' %}"class="button is-wine">
+                  <strong>Войти в профиль</strong>
+                </a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
 
     {% block content %}
     {% endblock %}
 
-    <footer class="text-muted py-5">
-      <div class="container">
-        <p class="float-end mb-1">
-          <a href="#">Вернуться наверх</a>
+    <footer class="footer-secondary">
+      <div class="content has-text-centered">
+        <p>
+          <p class="mb-1">Веб-приложение для винного погреба от bunsanandme</p>
+          <p class="mb-0">Если что-то не работает, <a href="tg://resolve?domain=bunsanandme">напишите мне</a>.</p>
         </p>
-        <p class="mb-1">Веб-приложение для винного погреба от bunsanandme</p>
-        <p class="mb-0">Если что-то не работает, <a href="tg://resolve?domain=bunsanandme">напишите мне</a>.</p>
       </div>
     </footer>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="/docs/5.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-  </body>
+  </section>
+  <script>
+      var dropdown = document.querySelector('.dropdown');
+      dropdown.addEventListener('click', function(event) {
+        event.stopPropagation();
+        dropdown.classList.toggle('is-active');
+      });
+  </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+</body>
 </html>

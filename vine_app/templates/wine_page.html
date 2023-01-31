@@ -1,46 +1,193 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container mt-5 mb-5">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="images p-3">
-                            <div class="text-center p-4"> <img id="main-image" src="{{wine.wine_image.url}}" width="250" /> </div>
-                        </div>
+<div class="container">
+    <section class="section">
+        <div class="container is-fluid">
+        {% if user.is_authenticated %}
+            <div class="notification">
+                <a href="{% url 'wine_edit' wine.wine_id %}"class="button is-warning is-medium">
+                    <!-- <span class="icon is-small">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                    </span> -->
+                    <span>Редактировать карточку</span>
+                </a>
+                <a class="button is-danger is-medium js-modal-trigger" data-target="modal-js-example">
+                    <span class="icon is-small">
+                        <i class="fas fa-times"></i>
+                      </span>
+                    <span>Удалить карточку</span>
+                </a>
+            </div>
+        {% endif %}
+
+        {% if messages %}
+            {% for message in messages %}
+            <article {% if message.tags %} class="message is-{{ message.tags }}"{% endif %}>
+                <div class="message-header">
+                <p>{{message}}</p>
+                <button class="delete" aria-label="delete" onclick="deleteMessage(event)"></button>
+                </div>
+            </article>
+            {% endfor %}
+        {% endif %}  
+        
+            <div class="columns is-vcentered is-multiline">
+                <div class="column is-6-tablet is-3-desktop">
+                    <h1 class="is-size-3-mobile is-size-1-desktop title" style="width: 375px">{{wine.wine_name}}</h1>
+                    <br>
+                    <h2 class="is-size-3-mobile is-size-2-desktop subtitle">{{wine.winery}}</h2>
+                    <p>{{wine.taste}}</p>
+                </div>
+                <div class="column is-6-tablet is-5-desktop has-text-centered">
+                    <img src="{{wine.wine_image.url}}" alt="Бутылка вина" class="px-6">
+                </div>  
+                <div class="column is-12-tablet is-4-desktop">
+                    <div class="is-size-4 mb-4">Виноград сорта "{{wine.grape}}"</div>
+                    <p class="mb-4">{{wine.fragrance}}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="columns is-8 is-variable">
+                <div class="column is-7-tablet">
+                    <!-- tabbed content -->
+                    <div class="tabs is-boxed">
+                        <ul>
+                            <li class="is-active" data-target="product-details">
+                                <a style="color: #b00000"><b>Подробности</b></a>
+                            </li>
+                            <li data-target="delivery-info">
+                                <a style="color:#b00000"><b>Интересные факты</b></a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="col-md-6">
-                        <div class="product p-4">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a href="{% url "home" %}" class="btn btn-primary">Назад</a>
-                            </div>
-                            <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand">{{wine.winery}}</span>
-                                <h5 class="text-uppercase">{{wine}}</h5>
-                            </div>
-                            <p class="about">{{wine.fragrance}}</p>
-                            <p class="about">{{wine.taste}}</p>
-                            <p class="about">Виноград: {{wine.grape}}</p>
-                            <p class="about">Регион: {{wine.region}}</p>
-                            <p class="about">Интересные факты</p>
-                            <ul class="about">
-                                {% for facts in wine_fun_facts %}
-                                    <li>{{facts}}</li>
-                                {% endfor %}
-                            </ul>
-                            {% if user.is_authenticated %}
-                            <a href="{% url 'wine_edit' wine.wine_id %}" class="btn btn-warning">Редактировать карточку</a>
-                            <a href="{% url 'wine_delete' wine.wine_id %}" class="btn btn-danger">Удалить карточку</a>
-                            {% endif %}
-                            <div class="sizes mt-5">
-                            </div>
-                              </div>
+                    <div class="px-2" id="tab-content">
+                        <div id="product-details">
+                            <h2 class="is-size-5 title">Год урожая</h2>
+                            <p>{{wine.crop_year}}</p><br>
+                            <h2 class="is-size-5 title">Регион</h2>
+                            <p>{{wine.region}}</p><br>
+                            <h2 class="is-size-5 title">Вкус</h2>
+                            <p>{{wine.taste}}</p><br>
+                            <h2 class="is-size-5 title">Аромат</h2>
+                            <p>{{wine.fragrance}}</p><br>
+                        </div>
+                        <div class="is-hidden" id="delivery-info">
+                            <h3 class="is-size-5 title">Интересные факты</h3>
+                            
+                                {% for fact in wine_fun_facts %}
+                                <li>
+                                    {{fact}}
+                                </li>
+                                <br>
+                                {% endfor %}                                 
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <div id="modal-js-example" class="modal">
+        <div class="modal-background"></div>
+      
+        <div class="modal-content">
+          <div class="box">
+            <div class="block">
+                <p> Вы действительно хотите удалить эту карточку?</p>
+            </div>
+            <div class="buttons">
+                <a href="{% url 'wine_delete' wine.wine_id %}" class="button is-danger" >Да, удалить</a>
+                <button class="button" onclick="closeWindow($('#modal-js-example'))"> Отмена </button>
+            </div>
+          </div>
+        </div>
+      
+        <button class="modal-close is-large" aria-label="close"></button>
+      </div>
+    
+
+    <script>
+        const tabs = document.querySelectorAll('.tabs li');
+        const tabContentBoxes = document.querySelectorAll('#tab-content > div');
+        
+        tabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(item => item.classList.remove('is-active'));
+                tab.classList.add('is-active');
+        
+                const target = tab.dataset.target;
+                tabContentBoxes.forEach(box => {
+                    if (box.getAttribute('id') === target) {
+                        box.classList.remove('is-hidden');
+                    } else {
+                        box.classList.add('is-hidden');
+                    }
+                })
+            })
+        });
+
+        function closeModal($el) {
+            $el.classList.remove('is-active');
+            
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        // Functions to open and close a modal
+        function openModal($el) {
+            $el.classList.add('is-active');
+        }
+
+        function closeModal($el) {
+            $el.classList.remove('is-active');
+        }
+
+        function closeAllModals() {
+            (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+            closeModal($modal);
+            });
+        }
+
+        // Add a click event on buttons to open a specific modal
+        (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+            const modal = $trigger.dataset.target;
+            const $target = document.getElementById(modal);
+
+            $trigger.addEventListener('click', () => {
+            openModal($target);
+            });
+        });
+
+        // Add a click event on various child elements to close the parent modal
+        (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+            const $target = $close.closest('.modal');
+
+            $close.addEventListener('click', () => {
+            closeModal($target);
+            });
+        });
+
+        // Add a keyboard event to close all modals
+        document.addEventListener('keydown', (event) => {
+            const e = event || window.event;
+
+            if (e.keyCode === 27) { // Escape key
+            closeAllModals();
+            }
+        });
+        });
+
+        let deleteMessage = function(event) {
+            $('article').remove();
+        }
+
+        let closeWindow = function($el) {
+            $el.removeClass('is-active');
+        }
+     </script>
 </div>
 
 {% endblock %}

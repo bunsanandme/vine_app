@@ -1,46 +1,123 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
+{% load static %}
 {% block content %}
 
-<div class="container mt-5 mb-5">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="row">
-                    <form action="" method="post">
-                    {% csrf_token %}
-
-                    <div class="col-md-6">
-                        <div class="images p-3">
-                            <div class="text-center p-4"> <img id="main-image" src="{{form.wine_image.url}}" width="250" /> </div>
+<main>
+    <section class="section">
+        <div class="container">
+            <div class="has-text-centered" >
+                <h1 class="title is-1">Редактировать карточку вина</h1>
+                <a href="{% url 'show_wine' wine.wine_id %}" class="button is-wine"><b>Назад</b></a>
+              </div>
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <br><br>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Название винодельни</label>
+                            <div class="control">
+                                {% render_field form.winery class="input" type="text" style="width: 500px"%}
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Название вина</label>
+                            <div class="control">
+                                {% render_field form.wine_name class="input" type="text" style="width: 500px"%}
+                            </div>
+                        </div>
+                        <label class="label">Полка </label>
+                        <div class="select">
+                            <div class="control">
+                                {% render_field form.shelf_id class="select" %}
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="product p-4">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <a href="{% url "home" %}" class="btn btn-primary">Назад</a>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Год урожая</label>
+                            <div class="control">
+                                {% render_field form.crop_year class="input" placeholder="Например, 1999" type="text" style="width: 500px"%}
                             </div>
-                            <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand">{{form.winery}}</span>
-                                <h5 class="text-uppercase">{{wine}}</h5>
+                        </div>
+                        <div class="field">
+                            <label class="label">Регион</label>
+                            <div class="control">
+                                {% render_field form.region class="input" type="text" style="width: 500px"%}
                             </div>
-                            <p class="about">{{form.fragrance}}</p>
-                            <p class="about">{{form.taste}}</p>
-                            <p class="about">Виноград: {{form.grape}}</p>
-                            <p class="about">Регион: {{form.region}}</p>
-                            <p class="about">Интересные факты</p>
-                            <p class="about">Интересные факты</p>
-                            <ul class="about">
-                            {{form.wine_image}}
-                            </ul>
-                            <input type="submit" value="Сохранить" />
-                            <div class="sizes mt-5">
+                        </div>
+                        <div class="field">
+                            <label class="label">Сорт винограда</label>
+                            <div class="control">
+                                {% render_field form.grape class="input" type="text" style="width: 500px"%}
                             </div>
-                              </div>                       
-                    </form>                   
+                        </div>
                     </div>
                 </div>
-            </div>
+                <br><br>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Аромат</label>
+                            <div class="control">
+                                {% render_field form.fragrance class="input" type="textarea" style="width: 500px; height: 150px"%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Вкус</label>
+                            <div class="control">
+                                {% render_field form.taste class="input" type="text" style="width: 500px; height: 150px"%}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Интересные факты</label>
+                            <div class="control">
+                                {% render_field form.fun_facts class="input" placeholder="Вводите через отступы" type="text" style="width: 750px; height: 250px"%}
+                            </div>
+                            <p class="help">Вводите факты через отступ между ними</p>
+                        </div>
+                    </div>
+                </div>
+                    <br>
+                    <label class="label">Изображение бутылки</label>
+                    <div class="columns is-flex is-vcentered is-centered">
+                        <div class="column">   
+                            <div class="file is-large is-boxed is-centered">
+                                <label class="file-label">
+                                  {% render_field form.wine_image class="file-input" type="file" name="resume" onchange="loadFile(event)" %}
+                                  <span class="file-cta">
+                                    <span class="file-icon">
+                                      <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span class="file-label">
+                                      Загрузить...
+                                    </span>
+                                  </span>
+                                </label>
+                              </div>
+                        </div>
+                        <div class="column">
+                            <img id="output" src="{{wine.wine_image.url}}" alt="Бутылка вина" class="px-6"> 
+                        </div>
+                    </div>
+                <input type="submit" class="button is-success is-medium is-fullwidth" value="Сохранить"/>  
+            </form>                   
         </div>
-    </div>
-</div>
+    </section>
+</main>
 
+<script>
+    let loadFile = function(event) {
+        let image = document.getElementById('output');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>
 {% endblock %}
