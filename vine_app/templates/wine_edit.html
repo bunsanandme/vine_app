@@ -8,7 +8,7 @@
         <div class="container">
             <div class="has-text-centered" >
                 <h1 class="title is-1">Редактировать карточку вина</h1>
-                <a href="{% url 'show_wine' wine.wine_id %}" class="button is-wine"><b>Назад</b></a>
+                <a onclick="goBack()" class="button is-wine"><b>Назад</b></a>
               </div>
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}

@@ -6,14 +6,39 @@
         <div class="has-text-centered" >
           <h1 class="title is-1">{{shelf}}</h1>
           <h4 class="subtitle">
-            {% if shelf.shelf_id == 0 %}
-              Эти карточки требуют дополнительной редакции
-            {% else %}
-              Представляем коллекцию вин, отобранную со вкусом и знанием своего дела
-            {% endif %}
+            {{shelf.description}}
           </h4>
-          <a href="{% url 'home' %}" class="button is-wine is-medium"><b>Назад</b></a>
+          <a class="button is-wine is-medium" onclick="goBack()"><b>Назад</b></a>
         </div>
+        <br>
+        {% if user.is_authenticated %}
+            <div class="notification">
+              <div class="buttons">
+                <a href="{% url 'shelf_edit' shelf.id %} "class="button is-warning is-medium">
+                    <span>Редактировать</span>
+                </a>
+                {% if shelf.id != 8 %}
+                <a class="button is-danger is-medium js-modal-trigger" data-target="modal-js-example">
+                  <span class="icon is-small">
+                      <i class="fas fa-times"></i>
+                    </span>
+                  <span>Удалить</span>
+                {% endif %}
+                </a>
+              </div>
+            </div>
+        {% endif %}
+        
+        {% if messages %}
+            {% for message in messages %}
+            <article {% if message.tags %} class="message is-{{ message.tags }}"{% endif %}>
+                <div class="message-header">
+                <p>{{message}}</p>
+                <button class="delete" aria-label="delete" onclick="deleteMessage(event)"></button>
+                </div>
+            </article>
+            {% endfor %}
+        {% endif %}
         <br />
         {% for chunks in page_obj.object_list %}
         <div class="row columns is-multiline">
@@ -38,16 +63,32 @@
       {% endfor %}
       <nav class="pagination is-centered" role="navigation" aria-label="pagination">
         {%if page_obj.has_previous %}
-            <a class="pagination-previous" href="?page={{page_obj.previous_page_number}}">След. страница</a>
+            <a class="pagination-previous" href="?page={{page_obj.previous_page_number}}">Пред. страница</a>
         {% endif %}
         {%if page_obj.has_next %}
-            <a class="pagination-next" href="?page={{page_obj.next_page_number}}">Пред. страница</a>
+            <a class="pagination-next" href="?page={{page_obj.next_page_number}}">След. страница</a>
         {% endif %}
         <ul class="pagination-list">
-          <a class="pagination-link is-current is-wine" aria-label="Page 1" aria-current="page">{{page_obj.number}}</a>
+          <a class="pagination-link is-current is-wine" aria-label="Page 1" aria-current="page" style="background-color: #bb0000;">{{page_obj.number}}</a>
       </nav>
-      </div>
+      </div> 
     </section>
+</main>
 
-</main>  
+<div id="modal-js-example" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <div class="block">
+          <p> Вы действительно хотите удалить эту полку?</p>
+      </div>
+      <div class="buttons">
+          <a href="{% url 'shelf_delete' shelf.id %}" class="button is-danger" >Да, удалить</a>
+          <button class="button" onclick="closeWindow($('#modal-js-example'))"> Отмена </button>
+      </div>
+    </div>
+  </div>
+
+  <button class="modal-close is-large" aria-label="close"></button>
+</div>
 {% endblock %}

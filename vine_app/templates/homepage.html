@@ -24,7 +24,7 @@
         <div class="row columns is-multiline">
             {% for shelf in chunks %}
             <div class="column is-4">
-            <a href="{% url 'show_shelf' shelf.shelf_id %}">
+            <a href="{% url 'show_shelf' shelf.id %}">
             <div class="card">
               <div class="card-content">
                 <h4 class="title is-4 has-text-centered">{{shelf}}</h3>
@@ -39,9 +39,5 @@
 
 </main> 
 
-<script>
-  let deleteMessage = function(event) {
-    $('article').remove();
-  }
-</script>
+
 {% endblock %}

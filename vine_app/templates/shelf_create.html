@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<main>
+    <section class="section">
+        <div class="container">
+            {% if messages %}
+            {% for message in messages %}
+            <article {% if message.tags %} class="message is-{{ message.tags }}"{% endif %}>
+                <div class="message-header">
+                <p>{{message}}</p>
+                <button class="delete" aria-label="delete" onclick="deleteMessage(event)"></button>
+                </div>
+            </article>
+            {% endfor %}
+        {% endif %}  
+
+            <div class="has-text-centered" >
+                <h1 class="title is-1">Создать новую полку</h1>
+                <a onclick="goBack()" class="button is-wine"><b>Назад</b></a>
+              </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="field">
+                <label class="label">Название полки</label>
+                <div class="control">
+                    {% render_field form.title class="input" style="width: 500px" %}
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Описание (отображается на странице полки)</label>
+                <div class="control">
+                    {% render_field form.description class="input" style="width: 500px; height: 150px" %}
+                </div>
+            </div>
+            
+            <input type="submit" class="button is-success" value="Создать">
+
+            
+        </form>
+        </div>
+    </section>
+</main>
+{% endblock %}

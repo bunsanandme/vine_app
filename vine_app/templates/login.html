@@ -71,8 +71,19 @@ p.subtitle {
         <div class="login">
             <div class="has-text-centered" >
                 <h1 class="title is-1">Войти как сомелье</h1>
-              </div>
+            </div>
             <br>
+            
+            {% if messages %}
+            {% for message in messages %}
+              <div class="notification is-danger is-small" id="arcticle" style="width: 400px;
+              margin: 0 auto;">
+                <button class="delete" onclick="deleteMessage(event)"></button>
+                <p>{{message}}</p>
+              </div>
+            {% endfor %}
+            {% endif %}
+          <br>
           <form method="POST">
             {% csrf_token %}
             <div class="field">
@@ -86,18 +97,17 @@ p.subtitle {
               </div>
             </div>
             <br />
-            <a href="{% url 'home' %}" class="button is-medium">Назад</a>
+            <a onclick="goBack()" class="button is-medium">Назад</a>
             <button class="button is-medium is-wine" type="submit">
               Войти
             </button>
+            <input type="hidden" name="next" value="{{ request.GET.next }}"/>
           </form>
           <br>
           <nav class="level">
             <div class="level-item has-text-centered">
-            </div>
-            <div class="level-item has-text-centered">
               <div>
-                <a href="{% url 'register' %}">Создать аккаунт</a>
+                Нет профиля? <a href="{% url 'register' %}">Создать профиля</a>
               </div>
             </div>
           </nav>
@@ -106,4 +116,12 @@ p.subtitle {
         </div>
     </section>
 </main>
+
+<script>
+  let deleteMessage = function(event) {
+    let arcticle = document.getElementById('arcticle');
+    arcticle.remove();
+  }
+</script>
+
 </body>

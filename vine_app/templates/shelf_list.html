@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <section class="section">
+        <div class="container is-fluid">
+            <div class="has-text-centered" >
+                <h1 class="title is-1">Все полки</h1>
+                <a class="button is-wine is-medium" onclick="goBack()"><b>Назад</b></a>
+                <br><br>
+               
+                </div>
+              </div>
+              <br>
+            {% for chunks in page_obj.object_list %}
+                <div class="row columns is-multiline">
+                {% for shelf in chunks %}
+                    <div class="column is-4">
+                        <div class="card">
+                            <div class="card-content">
+                                <h4 class="title is-4 has-text-centered" style="height: 30px">{{shelf}}</h4>
+                                <div class="buttons is-centered">
+                                    <a href="{% url 'shelf_edit' shelf.id %}" class="button is-warning">Редактировать</a>
+                                    <a href="{% url 'shelf_delete' shelf.id %}" class="button is-danger">Удалить</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  {% endfor %}    
+                </div>
+            {% endfor %}
+
+            <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                {%if page_obj.has_previous %}
+                    <a class="pagination-previous" href="?page={{page_obj.previous_page_number}}">Пред. страница</a>
+                {% endif %}
+                {%if page_obj.has_next %}
+                    <a class="pagination-next" href="?page={{page_obj.next_page_number}}">След. страница</a>
+                {% endif %}
+                <ul class="pagination-list">
+                  <a class="pagination-link is-current is-wine" aria-label="Page 1" aria-current="page" style="background-color: #bb0000;">{{page_obj.number}}</a>
+              </nav>
+
+        </div>
+    </section>
+</div>
+
+{% endblock %}

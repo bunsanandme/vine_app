@@ -6,8 +6,8 @@ from django.urls import reverse
 
 
 class Shelf(models.Model):
-    shelf_id = models.IntegerField(unique=True)
-    title = models.CharField(max_length=50, default="")
+    title = models.CharField(max_length=50, default="Полка")
+    description = models.TextField(default="Представляем коллекцию вин, отобранную со вкусом и знанием своего дела")
 
     def __str__(self):
         return self.title

@@ -1,0 +1,12 @@
+{% if messages %}
+    {% for message in messages %}
+    <article {% if message.tags %} class="message is-{{ message.tags }}"{% endif %}>
+        <div class="message-header">
+            {% autoescape off %}
+                <p>{{message}}</p>
+            {% endautoescape %}
+            <button class="delete" aria-label="delete" onclick="deleteMessage(event)"></button>
+        </div>
+    </article>
+    {% endfor %}
+{% endif %} 

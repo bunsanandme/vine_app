@@ -1,61 +1,177 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Винный погреб</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-social@2/css/all.min.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"
-    />
-    <link rel="stylesheet" href="{% static 'styles.css' %}"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-
-  </style>
-  </head>
-  <body>
+{% extends "base.html" %}
+{% block content %}
 <main>
-    <section class="section">
-        <div class="container">
-        <div class="hero-body has-text-centered">
-        <div class="login">
-            <img src="{% static 'logo.png' %}" />
-          <form>
-            <div class="field">
-              <div class="control">
-                <input class="input is-medium" type="email" placeholder="hello@example.com" required />
-              </div>
+  <section class="section">
+    <div class="container">
+                <section class="hero is-blue welcome is-small" style="color: #576490">
+                    <div class="hero-body">
+                        <div class="container">
+                            <h1 class="title" >
+                                Добрый день, {{user.username}}!
+                            </h1>
+                            <h2 class="subtitle is-white">
+                                <a href="{% url 'relogin' %}"> Сменить пользователя </a>
+                            </h2>
+                        </div>
+                    </div>
+                </section>
+                <section class="info-tiles">
+                    <div class="tile is-ancestor has-text-centered">
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title">439k</p>
+                                <p class="subtitle">Users</p>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title">59k</p>
+                                <p class="subtitle">Products</p>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title">3.4k</p>
+                                <p class="subtitle">Open Orders</p>
+                            </article>
+                        </div>
+                        <div class="tile is-parent">
+                            <article class="tile is-child box">
+                                <p class="title">19</p>
+                                <p class="subtitle">Exceptions</p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+                <div class="columns">
+                    <div class="column is-6">
+                        <div class="card events-card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Events
+                                </p>
+                                <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </a>
+                            </header>
+                            <div class="card-table">
+                                <div class="content">
+                                    <table class="table is-fullwidth is-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                                <td>Lorum ipsum dolem aire</td>
+                                                <td class="level-right"><a class="button is-small is-primary" href="#">Action</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <footer class="card-footer">
+                                <a href="#" class="card-footer-item">View All</a>
+                            </footer>
+                        </div>
+                    </div>
+                    <div class="column is-6">
+                        <div class="card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Inventory Search
+                                </p>
+                                <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </a>
+                            </header>
+                            <div class="card-content">
+                                <div class="content">
+                                    <div class="control has-icons-left has-icons-right">
+                                        <input class="input is-large" type="text" placeholder="">
+                                        <span class="icon is-medium is-left">
+                      <i class="fa fa-search"></i>
+                    </span>
+                                        <span class="icon is-medium is-right">
+                      <i class="fa fa-check"></i>
+                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    User Search
+                                </p>
+                                <a href="#" class="card-header-icon" aria-label="more options">
+                  <span class="icon">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </a>
+                            </header>
+                            <div class="card-content">
+                                <div class="content">
+                                    <div class="control has-icons-left has-icons-right">
+                                        <input class="input is-large" type="text" placeholder="">
+                                        <span class="icon is-medium is-left">
+                      <i class="fa fa-search"></i>
+                    </span>
+                                        <span class="icon is-medium is-right">
+                      <i class="fa fa-check"></i>
+                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="field">
-              <div class="control">
-                <input class="input is-medium" type="password" placeholder="**********"  required />
-              </div>
-            </div>
-            <br />
-            <button class="button is-medium is-wine" type="submit">
-              Login
-            </button>
-          </form>
-          <br>
-          <nav class="level">
-            <div class="level-item has-text-centered">
-              <div>
-                <a href="#">Forgot Password?</a>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <a href="#">Create an Account</a>
-              </div>
-            </div>
-          </nav>
         </div>
-      </div>
-        </div>
+    </div>
+    <script async type="text/javascript" src="../js/bulma.js"></script>
     </section>
-</main>
-</body>
+    </main>
+    
+{% endblock %}
