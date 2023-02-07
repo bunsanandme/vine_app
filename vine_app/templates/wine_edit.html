@@ -8,8 +8,18 @@
         <div class="container">
             <div class="has-text-centered" >
                 <h1 class="title is-1">Редактировать карточку вина</h1>
-                <a onclick="goBack()" class="button is-wine"><b>Назад</b></a>
+                <br>
               </div>
+
+              <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+                <ul>
+                  <li><a href="{% url 'index' %}">Главная</a></li>
+                  <li><a href="{% url 'show_shelf' wine.shelf_id.id %}">{{wine.shelf_id.title}}</a></li>
+                  <li><a href="{% url 'show_wine' wine.wine_id %}">{{wine}}</a></li>
+                  <li class="is-active"><a href="#" aria-current="page">Создать карточку</a></li>
+                </ul>
+              </nav> 
+              
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <br><br>

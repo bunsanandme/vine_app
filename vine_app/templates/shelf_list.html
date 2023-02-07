@@ -6,8 +6,14 @@
         <div class="container is-fluid">
             <div class="has-text-centered" >
                 <h1 class="title is-1">Все полки</h1>
-                <a class="button is-wine is-medium" onclick="goBack()"><b>Назад</b></a>
-                <br><br>
+                <br>
+                <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+                    <ul>
+                      <li><a href="{% url 'index' %}">Главная</a></li>
+                      <li><a href="{% url 'profile' %}">Профиль</a></li>
+                      <li class="is-active"><a href="#" aria-current="page">Все полки</a></li>
+                    </ul>
+                  </nav>
                
                 </div>
               </div>

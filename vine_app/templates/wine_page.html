@@ -32,6 +32,14 @@
             {% endfor %}
         {% endif %}  
         
+        <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+            <ul>
+              <li><a href="{% url 'index' %}">Главная</a></li>
+              <li><a href="{% url 'show_shelf' wine.shelf_id.id %}">{{wine.shelf_id}}</a></li>
+              <li class="is-active"><a href="#" aria-current="page">{{wine}}</a></li>
+            </ul>
+          </nav>
+
             <div class="columns is-vcentered is-multiline">
                 <div class="column is-6-tablet is-3-desktop">
                     <h1 class="is-size-3-mobile is-size-1-desktop title" style="width: 375px">{{wine.wine_name}}</h1>

@@ -17,9 +17,16 @@
         {% endif %}
         
             <div class="has-text-centered" >
-                <h1 class="title is-1">Редактировать новую полку</h1>
-                <a onclick="goBack()" class="button is-wine"><b>Назад</b></a>
-              </div>
+                <h1 class="title is-1">Редактировать полку</h1>
+            </div>
+            <br>
+            <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+                <ul>
+                  <li><a href="{% url 'index' %}">Главная</a></li>
+                  <li><a href="{% url 'show_shelf' shelf.id %}">{{self.title}}</a></li>
+                  <li class="is-active"><a href="#" aria-current="page">Редактировать полку</a></li>
+                </ul>
+              </nav> 
 
         <form method="POST">
             {% csrf_token %}

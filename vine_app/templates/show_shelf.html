@@ -8,7 +8,7 @@
           <h4 class="subtitle">
             {{shelf.description}}
           </h4>
-          <a class="button is-wine is-medium" onclick="goBack()"><b>Назад</b></a>
+          
         </div>
         <br>
         {% if user.is_authenticated %}
@@ -28,7 +28,14 @@
               </div>
             </div>
         {% endif %}
-        
+
+        <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+          <ul>
+            <li><a href="{% url 'index' %}">Главная</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{{shelf.title}}</a></li>
+          </ul>
+        </nav>
+
         {% if messages %}
             {% for message in messages %}
             <article {% if message.tags %} class="message is-{{ message.tags }}"{% endif %}>
@@ -43,20 +50,18 @@
         {% for chunks in page_obj.object_list %}
         <div class="row columns is-multiline">
             {% for wine in chunks %}
-            <div class="column is-4">
-            <div class="card" style="height: 642px">
+            <div class="column is-4 is-mobile">
+            <a href="{% url 'show_wine' wine.wine_id%}">  
+            <div class="card" style="height: 500px">
               <div class="card-content">
                 <div class="has-text-centered">
                   <img class="product-image" src="{{wine.wine_image.url}}" />
                 </div>
-                <h4 class="title is-4 has-text-centered" style="height: 54px">{{wine}}</h3>
-                <p class="has-text-centered">
-                  {{wine.taste|truncatechars:123}}
-                </p>
+                <h4 class="title is-4 has-text-centered" >{{wine}}</h3>
                 <br>
-                <a href="{% url 'show_wine' wine.wine_id%}" class="button is-wine"><b>Подробнее</b></a>
               </div>
               </div>
+            </a>
               </div>
               {% endfor %}    
       </div>

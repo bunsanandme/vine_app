@@ -84,6 +84,13 @@ p.subtitle {
             {% endfor %}
             {% endif %}
           <br>
+          <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+            <ul>
+              <li><a href="{% url 'index' %}">Главная</a></li>
+              <li class="is-active"><a href="#" aria-current="page">Логин</a></li>
+            </ul>
+          </nav>
+          <br>
           <form method="POST">
             {% csrf_token %}
             <div class="field">
@@ -97,7 +104,6 @@ p.subtitle {
               </div>
             </div>
             <br />
-            <a onclick="goBack()" class="button is-medium">Назад</a>
             <button class="button is-medium is-wine" type="submit">
               Войти
             </button>
@@ -122,6 +128,9 @@ p.subtitle {
     let arcticle = document.getElementById('arcticle');
     arcticle.remove();
   }
+  function goBack() {
+        window.history.back()
+      }
 </script>
 
 </body>

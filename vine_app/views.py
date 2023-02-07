@@ -250,6 +250,7 @@ def wine_list(request):
         page_obj = p.page(p.num_pages)
     return render(request, "wine_list.html", {'page_obj': page_obj, 'title': "Все вина"})
 
+@login_required
 def editable_wine_list(request):
     wines = list(Wine.objects.filter(shelf_id=8))
     wines = list(partition(wines, 3))

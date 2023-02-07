@@ -6,8 +6,14 @@
         <div class="container is-fluid">
             <div class="has-text-centered" >
                 <h1 class="title is-1">{{ title }}</h1>
-                <a class="button is-wine is-medium" onclick="goBack()"><b>Назад</b></a>
-                <br><br>
+                <br>
+                <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+                  <ul>
+                    <li><a href="{% url 'index' %}">Главная</a></li>
+                    <li><a href="{% url 'profile' %}">Профиль</a></li>
+                    <li class="is-active"><a href="#" aria-current="page">{{title}}</a></li>
+                  </ul>
+                </nav> 
                 <form method="GET" action = "{% url 'search' %}">
                   <div class="field has-addons">
                       <div class="control "style="width: 190%">
@@ -30,8 +36,10 @@
                                 <h4 class="title is-4 has-text-centered" style="height: 54px">{{wine}}</h3>
                                 <p>Полка: <b>{{wine.shelf_id}}</b></p>
                                 <br>
-                                <a href="{% url 'wine_edit' wine.wine_id%}" class="button is-warning">Редактировать</a>
-                                <a href="{% url 'wine_delete' wine.wine_id %}" class="button is-danger">Удалить</a>
+                                <div class="buttons is-centered">
+                                  <a href="{% url 'wine_edit' wine.wine_id%}" class="button is-warning">Редактировать</a>
+                                  <a href="{% url 'wine_delete' wine.wine_id %}" class="button is-danger">Удалить</a>
+                                </div>
                             </div>
                         </div>
                     </div>
