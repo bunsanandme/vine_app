@@ -1,241 +1,108 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Винный погреб</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-social@2/css/all.min.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"
-    />
-    <link rel="stylesheet" href="{% static 'styles.css' %}"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    .dropdown-menu {
-      opacity: 0;
-      animation: ani 1.0s forwards;
-    }
 
-    @keyframes ani {
-      0% {opacity: 0;}
-      100% {opacity: 1;}
-    }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Винный погреб</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-social@2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" />
+  <link rel="stylesheet" href="{% static 'styles.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
+    integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
 
-    .is-white {
-      color: #F7F7FF
-    }
+<body>
+  <!-- Бургер меню -->
+  <div class="container" id="navbar-container">
+    <nav class="navbar" role="navigation" aria-label="main navigation" id="main_navbar">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="{% url 'home' %}">
+          <img src="{% static 'logo.png' %}" />
+        </a>
+      </div>
+      <input type="checkbox" id="navbar-burger-toggle" class="navbar-burger-toggle is-hidden">
+      <label for="navbar-burger-toggle" class="navbar-burger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
 
-    .navbar-burger-toggle + .navbar-burger {
-  margin-top: -3.25em;
-}
+      <!-- Навигационная панель сайта(шапка) -->
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start"></div>
 
-/* Hamburger/X animation (1/3). */
-.navbar-burger-toggle:checked + .navbar-burger span:nth-child(1) {
-  transform: translateY(5px) rotate(45deg);
-}
-
-/* Hamburger/X animation (2/3). */
-.navbar-burger-toggle:checked + .navbar-burger span:nth-child(2) {
-  opacity: 0;
-}
-
-/* Hamburger/X animation (3/3). */
-.navbar-burger-toggle:checked + .navbar-burger span:nth-child(3) {
-  transform: translateY(-5px) rotate(-45deg);
-}
-
-/* Display menu when it's checked. */
-.navbar-burger-toggle:checked ~ .navbar-menu {
-  display: block;
-}
-  </style>
-  </head>
-
-  <body>
-    <div class="container" id="navbar-container">
-      <nav class="navbar" role="navigation" aria-label="main navigation" id="main_navbar">
-        <div class="navbar-brand">
-          <a class="navbar-item" href="{% url '' %}">
-            <img src="{% static 'logo.png' %}" />
-          </a>
-        </div>
-          <input type="checkbox" id="navbar-burger-toggle" class="navbar-burger-toggle is-hidden">
-          <label for="navbar-burger-toggle" class="navbar-burger">
-            <span></span>
-            <span></span>
-            <span></span>
-          </label>
-          
-       
-        <div id="navbarBasicExample" class="navbar-menu">
-          <div class="navbar-start"></div>
-
-          <div class="navbar-end">
-            <div class="navbar-item">
-              <a class="navbar-item" href="{% url 'index' %}"> Главная </a>
-              <div class="buttons">
-                {% if user.is_authenticated %}
-                <div class="dropdown">
-                  <div class="dropdown-trigger">
-                    <a class="button is-wine" aria-haspopup="true" aria-controls="dropdown-menu" >
-                      <span>{{ user.username }}</span>
-                      <span class="icon is-small">
-                        <i class="fas fa-angle-down" aria-hidden="true"></i>
-                      </span>
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <a class="navbar-item" href="{% url 'home' %}"> Главная </a>
+            <div class="buttons">
+              {% if user.is_authenticated %}
+              <div class="dropdown">
+                <div class="dropdown-trigger">
+                  <a class="button is-wine" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>{{ user.username }}</span>
+                    <span class="icon is-small">
+                      <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                  </a>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                  <div class="dropdown-content">
+                    <a href="{% url 'profile' %}" class="dropdown-item">
+                      Профиль
+                    </a>
+                    <a href="{% url 'wine_create' %}" class="dropdown-item">
+                      Добавить вина
+                    </a>
+                    <a href="{% url 'shelf_create' %}" class="dropdown-item">
+                      Создать полку
+                    </a>
+                    <a href="{% url 'cabinet_create' %}" class="dropdown-item">
+                      Создать шкаф
+                    </a>
+                    <hr class="dropdown-divider">
+                    <a href="{% url 'logout' %}?next={{ request.path | urlencode }}" class="dropdown-item">
+                      Выйти
                     </a>
                   </div>
-                  <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                    <div class="dropdown-content">
-                      <a href="{% url 'profile' %}" class="dropdown-item">
-                        Профиль
-                      </a>
-                      <a href="{% url 'wine_create' %}" class="dropdown-item">
-                        Добавить вина
-                      </a>
-                      <a href="{% url 'shelf_create' %}" class="dropdown-item">
-                        Создать полку
-                      </a>
-                      <hr class="dropdown-divider">
-                      <a href="{% url 'logout' %}?next={{ request.path | urlencode }}" class="dropdown-item">
-                        Выйти
-                      </a>
-                    </div>
-                  </div>
                 </div>
-                {% else %}
-                <a href="{% url 'login' %}?next={% firstof request.path '/' %}" class="button is-wine">
-                  <strong>Войти в профиль</strong>
-                </a>
-                {% endif %}
-                <div>
-                </a>
               </div>
+              {% else %}
+              <a href="{% url 'login' %}?next={% firstof request.path '/' %}" class="button is-wine">
+                <strong>Войти в профиль</strong>
+              </a>
+              {% endif %}
+              <div>
+                </a>
               </div>
             </div>
           </div>
         </div>
-      </nav>
-    </div>
-    {% block content %}
-    {% endblock %}
- 
-    <footer class="footer-secondary">
-      <div class="content has-text-centered">
-        <button class='button is-small is-hidden' onclick="showNavbar(event)" id="navbar_button">
-          <i class="fa fa-eye" aria-hidden="true"></i>
-          ⠀Показать навигацию
-        </button>
-        <p>
-          <p class="mb-1">Веб-приложение для винного погреба от bunsanandme</p>
-          <p class="mb-0">Если что-то не работает, <a href="tg://resolve?domain=bunsanandme">напишите мне</a>.</p>
-        </p>
       </div>
-    </footer>
+    </nav>
+  </div>
+  {% block content %}
+  {% endblock %}
+
+  <!-- Футер(подвал сайта) -->
+  <footer class="footer-secondary">
+    <div class="content has-text-centered">
+      <p>
+        <p class="mb-1">Веб-приложение для винного погреба от bunsanandme</p>
+        <p class="mb-0">Если что-то не работает, <a href="tg://resolve?domain=bunsanandme">напишите мне</a>.</p>
+      </p>
+    </div>
+  </footer>
   </section>
-
-  <script>
-        const tabs = document.querySelectorAll('.tabs li');
-        const tabContentBoxes = document.querySelectorAll('#tab-content > div');
-        
-        tabs.forEach((tab) => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(item => item.classList.remove('is-active'));
-                tab.classList.add('is-active');
-        
-                const target = tab.dataset.target;
-                tabContentBoxes.forEach(box => {
-                    if (box.getAttribute('id') === target) {
-                        box.classList.remove('is-hidden');
-                    } else {
-                        box.classList.add('is-hidden');
-                    }
-                })
-            })
-        });
-
-        function closeModal($el) {
-            $el.classList.remove('is-active');
-            
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-        function openModal($el) {
-            $el.classList.add('is-active');
-        }
-
-        function closeModal($el) {
-            $el.classList.remove('is-active');
-        }
-
-        function closeAllModals() {
-            (document.querySelectorAll('.modal') || []).forEach(($modal) => {
-            closeModal($modal);
-            });
-        }
-
-        // Add a click event on buttons to open a specific modal
-        (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
-            const modal = $trigger.dataset.target;
-            const $target = document.getElementById(modal);
-
-            $trigger.addEventListener('click', () => {
-            openModal($target);
-            });
-        });
-
-        // Add a click event on various child elements to close the parent modal
-        (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
-            const $target = $close.closest('.modal');
-
-            $close.addEventListener('click', () => {
-            closeModal($target);
-            });
-        });
-
-        // Add a keyboard event to close all modals
-        document.addEventListener('keydown', (event) => {
-            const e = event || window.event;
-
-            if (e.keyCode === 27) { // Escape key
-            closeAllModals();
-            }
-        });
-        });
-
-        let deleteMessage = function(event) {
-            $('article').remove();
-        }
-
-        let closeWindow = function($el) {
-            $el.removeClass('is-active');
-        }
-
-        let hideNavbar = function(event) {
-          $("#main_navbar").addClass("is-hidden")
-          $("#navbar_button").removeClass("is-hidden")
-        }
-
-        let showNavbar = function(event) {
-          $("#main_navbar").removeClass("is-hidden")
-          $("#navbar_button").addClass("is-hidden")
-        }
-      
-      var dropdown = document.querySelector('.dropdown');
-      dropdown.addEventListener('click', function(event) {
-        event.stopPropagation();
-        dropdown.classList.toggle('is-active');
-      })
-
-      function goBack() {
-        window.history.back()
-      }
-
-      
-  </script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+  <script src="{% static 'main.js'%}"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"
+    integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
 </body>
+
 </html>

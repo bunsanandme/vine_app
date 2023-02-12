@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <section class="section">
+        <div class="container is-fluid">
+
+            {% include "../components/message.html" with message=message %}
+
+            <div class="has-text-centered">
+                <h1 class="title is-1">Все полки</h1>
+                <br>
+                <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+                    <ul>
+                        <li><a href="{% url 'index' %}">Главная</a></li>
+                        <li><a href="{% url 'profile' %}">Профиль</a></li>
+                        <li class="is-active"><a href="#" aria-current="page">Все полки</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <br>
+            {% for chunks in page_obj.object_list %}
+            <div class="row columns is-multiline">
+                {% for shelf in chunks %}
+                <div class="column is-4">
+                    <div class="card">
+                        <div class="card-content">
+                            <h4 class="title is-4 has-text-centered" style="height: 30px">{{shelf}}</h4>
+                            <div class="buttons is-centered">
+                                <a href="{% url 'shelf_edit' shelf.id %}" class="button is-warning">Редактировать</a>
+                                <a href="{% url 'shelf_delete' shelf.id %}" class="button is-danger">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            {% include "../components/pagination.html" with page_obj=page_obj %}
+
+        </div>
+    </section>
+</div>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<main>
+    <section class="section">
+        <div class="container">
+
+            {% include "../components/message.html" with message=message %}
+
+            <div class="has-text-centered">
+                <h1 class="title is-1">Создать новую полку</h1>
+                <br>
+            </div>
+            <br>
+            <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+                <ul>
+                    <li><a href="{% url 'index' %}">Главная</a></li>
+                    <li class="is-active"><a href="#" aria-current="page">Создать полку</a></li>
+                </ul>
+            </nav>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="field">
+                    <label class="label">Название полки</label>
+                    <div class="control">
+                        {% render_field form.title class="input" style="width: 500px" %}
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">К какому шкафу относится полка?</label>
+                    <div class="select">
+                        {% render_field form.cabinet class="select" style="width: 500px" %}
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Описание (отображается на странице полки)</label>
+                    <div class="control">
+                        {% render_field form.description class="input" style="width: 500px; height: 150px" %}
+                    </div>
+                </div>
+
+                <input type="submit" class="button is-success" value="Создать">
+
+
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}

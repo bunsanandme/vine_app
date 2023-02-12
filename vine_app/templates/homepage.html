@@ -1,43 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
 <main>
-    <section class="section">
-      <div class="container">
-        {% if messages %}
-            {% for message in messages %}
-            <article {% if message.tags %} class="message is-{{ message.tags }}"{% endif %}>
-                <div class="message-header">
-                {% autoescape off %}
-                <p>{{message}}</p>
-                {% endautoescape %}
-                <button class="delete" aria-label="delete" onclick="deleteMessage(event)"></button>
-                </div>
-            </article>
-            {% endfor %}
-        {% endif %}  
-        
-        <div class="has-text-centered" id="services-text-container">
-          <h1 class="title is-1">{{shelf}}</h1>
-        </div>
-        <br />
-        {% for chunks in shelfs %}
-        <div class="row columns is-multiline">
-            {% for shelf in chunks %}
-            <div class="column is-4">
-            <a href="{% url 'show_shelf' shelf.id %}">
+  <section class="section">
+    <div class="container">
+
+      {% include "components/message.html" with message=message %}
+      
+      <div class="has-text-centered" id="services-text-container">
+        <h1 class="title is-1">Все шкафы</h1>
+      </div>
+      <br>
+
+      {% for chunks in cabinets %}
+      <div class="row columns is-multiline">
+        {% for cabinet in chunks %}
+        <div class="column is-4">
+          <a href="{% url 'cabinet_show' cabinet.id %}">
             <div class="card">
               <div class="card-content">
-                <h4 class="title is-4 has-text-centered">{{shelf}}</h3>
+                <h4 class="title is-4 has-text-centered">{{cabinet}}</h3>
               </div>
-              </div>
-            </a>
-              </div>
-              {% endfor %}    
+            </div>
+          </a>
+        </div>
+        {% endfor %}
       </div>
       {% endfor %}
-    </section>
-
-</main> 
-
-
+  </section>
+</main>
 {% endblock %}

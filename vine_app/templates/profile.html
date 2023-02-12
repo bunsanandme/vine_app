@@ -1,119 +1,132 @@
 {% extends "base.html" %}
 {% block content %}
 <main>
-  <section class="section">
-    <div class="container">
+    <section class="section">
+        <div class="container">
 
-        <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
-            <ul>
-              <li><a href="{% url 'index' %}">Главная</a></li>
-              <li class="is-active"><a href="#" aria-current="page">Профиль</a></li>
-            </ul>
-          </nav>
-          <br>
-                <section class="hero is-blue welcome is-small" style="color: #576490">
-                    <div class="hero-body">
-                        <div class="container">
-                            <h1 class="title" >
-                                Добрый день, {{user.username}}!
-                            </h1>
-                            <h2 class="subtitle is-white">
-                                <a href="{% url 'relogin' %}"> Сменить пользователя </a>
-                            </h2>
-                        </div>
+            <section class="hero is-blue welcome is-small" style="color: #576490">
+                <div class="hero-body">
+                    <div class="container">
+                        <h1 class="title">
+                            Добрый день, {{user.username}}!
+                        </h1>
+                        <h2 class="subtitle is-white">
+                            <a href="{% url 'relogin' %}"> Сменить пользователя </a>
+                        </h2>
                     </div>
-                </section>
-                <section class="info-tiles">
-                    <div class="tile is-ancestor has-text-centered">
-                        <div class="tile is-parent">
-                            <article class="tile is-child box">
-                                <p class="title">{{ wines|length }}</p>
-                                <p class="subtitle">Вина</p>
-                            </article>
-                        </div>
-                        <div class="tile is-parent">
-                            <article class="tile is-child box">
-                                <p class="title">{{ shelfs|length }}</p>
-                                <p class="subtitle">Полки</p>
-                            </article>
-                        </div>
-                        <div class="tile is-parent">
-                            <article class="tile is-child box">
-                                <p class="title">{{ wines_redacted|length }}</p>
-                                <p class="subtitle">Вина для редакции</p>
-                            </article>
-                        </div>
+                </div>
+            </section>
+            <section class="info-tiles">
+                <div class="tile is-ancestor has-text-centered">
+                    <div class="tile is-parent">
+                        <article class="tile is-child box">
+                            <p class="title">{{ wines|length }}</p>
+                            <p class="subtitle">Вина</p>
+                        </article>
                     </div>
-                </section>
-                <div class="columns">
-                    <div class="column is-6">
-                        <div class="card events-card">
-                            <header class="card-header">
-                                <p class="card-header-title">
-                                    Действия
-                                </p>
-                            </header>
-                            <div class="card-table">
-                                <div class="content">
-                                    <table class="table is-fullwidth">
-                                        <tbody>
-                                            <tr>
-                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                                <td><a href="{% url 'wine_list' %}"><strong>Просмотреть все вина</strong></a></td>                                                
-                                            </tr>
-                                            <tr>
-                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                                <td><a href="{% url 'shelfs_list' %}" ><strong>Просмотреть все полки</strong></a></td> 
-                                            </tr>
-                                            <tr>
-                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                                <td><a href="{% url 'editable_wine_list' %}"><strong>Просмотреть все вина для редакции</strong></a></td> 
-                                            </tr>
-                                            <tr>
-                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                                <td><a href="{% url 'wine_create' %}"><strong>Создать карточку вина</strong></a></td> 
-                                            </tr>
-                                            <tr>
-                                                <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                                <td><a href="{% url 'shelf_create' %}"><strong>Создать полку</strong></a></td> 
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="tile is-parent">
+                        <article class="tile is-child box">
+                            <p class="title">{{ shelfs|length }}</p>
+                            <p class="subtitle">Полки</p>
+                        </article>
                     </div>
-                    <div class="column is-6">
-                        <div class="card">
-                            <header class="card-header">
-                                <p class="card-header-title">
-                                    Поиск по коллекции
-                                </p>
-                            </header>
-                            <div class="card-content">
-                                <div class="content">
-                                    <form method="GET" action = "{% url 'search' %}">
-                                    <div class="field has-addons">
-                                        <div class="control "style="width: 190%">
-                                          <input class="input" name="search" type="text" >
-                                        </div>
-                                        <div class="control">
-                                          <input type="submit" class="button is-info" value="Поиск">
-                                        </form>
-                                        </div>
-                                      </div>
-                                    
-                                    </div>
-                                </div>
+                    <div class="tile is-parent">
+                        <article class="tile is-child box">
+                            <p class="title">{{ cabinets|length }}</p>
+                            <p class="subtitle">Шкафы</p>
+                        </article>
+                    </div>
+                    <div class="tile is-parent">
+                        <article class="tile is-child box">
+                            <p class="title">{{ wines_redacted|length }}</p>
+                            <p class="subtitle">Вина для редакции</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+            <div class="columns">
+                <div class="column is-6">
+                    <div class="card events-card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Действия
+                            </p>
+                        </header>
+                        <div class="card-table">
+                            <div class="content">
+                                <table class="table is-fullwidth">
+                                    <tbody>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'wine_list' %}"><strong>Просмотреть все
+                                                        вина</strong></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'shelfs_list' %}"><strong>Просмотреть все
+                                                        полки</strong></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'cabinet_list' %}"><strong>Просмотреть все
+                                                        шкафы</strong></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'editable_wine_list' %}"><strong>Просмотреть все вина
+                                                        для редакции</strong></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'wine_create' %}"><strong>Создать карточку
+                                                        вина</strong></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'shelf_create' %}"><strong>Создать полку</strong></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'cabinet_create' %}"><strong>Создать шкаф</strong></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="column is-6">
+                    <div class="card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Поиск по коллекции
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="content">
+                                <form method="GET" action="{% url 'search' %}">
+                                    <div class="field has-addons">
+                                        <div class="control " style="width: 190%">
+                                            <input class="input" name="search" type="text">
+                                        </div>
+                                        <div class="control">
+                                            <input type="submit" class="button is-info" value="Поиск">
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <script async type="text/javascript" src="../js/bulma.js"></script>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
     </section>
-    </main>
-    
+</main>
+
 {% endblock %}

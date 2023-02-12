@@ -15,7 +15,7 @@ class UserRegisterForm(UserCreationForm):
 class WineForm(ModelForm):
     class Meta:
         model = models.Wine
-        fields = ('shelf_id', 'wine_name', 'winery', 'crop_year', 'grape', 'region', 'fragrance', 'taste', 'fun_facts', 'wine_image')
+        fields = ('shelf_id', 'wine_name', 'winery', 'amount', 'crop_year', 'grape', 'region', 'fragrance', 'taste', 'fun_facts', 'wine_image')
 
 class FileUploadForm(forms.Form):
     file = forms.FileField(widget=FileInput())

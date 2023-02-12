@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+<main>
+  <section class="section">
+    <div class="container">
+
+      {% include "../components/message.html" with message=message %}
+
+      <div class="has-text-centered">
+        <h1 class="title is-1">{{shelf}}</h1>
+        <h4 class="subtitle">
+          {{shelf.description}}
+        </h4>
+      </div>
+      <br>
+
+      {% if user.is_authenticated %}
+      <div class="notification">
+        <div class="buttons">
+          <a href="{% url 'shelf_edit' shelf.id %} " class="button is-warning is-medium">
+            <span>Редактировать</span>
+          </a>
+          {% if shelf.id != 8 %}
+          <a class="button is-danger is-medium js-modal-trigger" data-target="modal-js-example">
+            <span class="icon is-small">
+              <i class="fas fa-times"></i>
+            </span>
+            <span>Удалить</span>
+            {% endif %}
+          </a>
+        </div>
+      </div>
+      {% endif %}
+
+      <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+        <ul>
+          <li><a href="{% url 'index' %}">Главная</a></li>
+          <li><a href="{% url 'cabinet_show' shelf.cabinet.id %}">{{shelf.cabinet}}</a></li>
+          <li class="is-active"><a href="#" aria-current="page">{{shelf.title}}</a></li>
+        </ul>
+      </nav>
+
+      <br />
+      {% for chunks in page_obj.object_list %}
+      <div class="row columns is-multiline">
+        {% for wine in chunks %}
+        <div class="column is-4 is-mobile">
+          <a href="{% url 'show_wine' wine.wine_id%}">
+            <div class="card"  style="height: 520px">
+              <div class="card-content">
+                <div class="has-text-centered">
+                  <img class="product-image" src="{{wine.wine_image.url}}" />
+                </div>
+                <h4 class="title is-4 has-text-centered" style="height: 81px">{{wine}}</h3>
+                  <h4 class="title is-4 has-text-centered">Сейчас в наличии: {{wine.amount}}</h3>
+                    <br>
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+
+      {% include "../components/pagination.html" with page_obj=page_obj %}
+
+    </div>
+  </section>
+</main>
+
+<div id="modal-js-example" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <div class="block">
+        <p> Вы действительно хотите удалить эту полку?</p>
+      </div>
+      <div class="buttons">
+        <a href="{% url 'shelf_delete' shelf.id %}" class="button is-danger">Да, удалить</a>
+        <button class="button" onclick="closeWindow($('#modal-js-example'))"> Отмена </button>
+      </div>
+    </div>
+  </div>
+
+  <button class="modal-close is-large" aria-label="close"></button>
+</div>
+{% endblock %}

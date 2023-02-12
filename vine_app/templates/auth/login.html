@@ -1,0 +1,127 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Винный погреб</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-social@2/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" />
+  <link rel="stylesheet" href="{% static 'styles.css' %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css"
+    integrity="sha512-aOG0c6nPNzGk+5zjwyJaoRUgCdOrfSDhmMID2u4+OIslr0GjpLKo7Xm0Ao3xmpM4T8AmIouRkqwj1nrdVsLKEQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .hero.is-success {
+      background: #F2F6FA;
+    }
+
+    .hero .nav,
+    .hero.is-success .nav {
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+
+    .box {
+      margin-top: 5rem;
+    }
+
+    .avatar {
+      margin-top: -70px;
+      padding-bottom: 20px;
+    }
+
+    .avatar img {
+      padding: 5px;
+      background: #fff;
+      border-radius: 50%;
+      -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
+      box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
+    }
+
+    input {
+      font-weight: 300;
+    }
+
+    p {
+      font-weight: 700;
+    }
+
+    p.subtitle {
+      padding-top: 1rem;
+    }
+
+    .login-hr {
+      border-bottom: 1px solid black;
+    }
+
+    .has-text-black {
+      color: black;
+    }
+
+    .field {
+      padding-bottom: 10px;
+    }
+
+    .fa {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="hero-body has-text-centered">
+          <div class="login">
+            <div class="has-text-centered">
+              <h1 class="title is-1">Войти как сомелье</h1>
+            </div>
+            <br>
+
+            {% include "../components/message.html" with message=message %}
+            <br>
+            <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+              <ul>
+                <li><a href="{% url 'index' %}">Главная</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Логин</a></li>
+              </ul>
+            </nav>
+            <br>
+            <form method="POST">
+              {% csrf_token %}
+              <div class="field">
+                <div class="control">
+                  {% render_field form.username class="input" placeholder="Логин" style="width: 400px"%}
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  {% render_field form.password class="input" type="password" placeholder="Пароль" autocomplete="current-password" style="width: 400px"%}
+                </div>
+              </div>
+              <br />
+              <button class="button is-medium is-wine" type="submit">
+                Войти
+              </button>
+              <input type="hidden" name="next" value="{{ request.GET.next }}" />
+            </form>
+            <br>
+            <nav class="level">
+              <div class="level-item has-text-centered">
+                <div>
+                  Нет профиля? <a href="{% url 'register' %}">Создать профиля</a>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="{% static 'main.js'%}"></script>
+</body>

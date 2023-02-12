@@ -24,4 +24,12 @@ class Migration(migrations.Migration):
             name='title',
             field=models.CharField(default='Полка', max_length=50),
         ),
+                migrations.CreateModel(
+            name='Cabinet',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('title', models.CharField(default='Шкаф', max_length=50)),
+                ('description', models.TextField(default='Описание винного шкафа дополнительно')),
+            ],
+        ),
     ]

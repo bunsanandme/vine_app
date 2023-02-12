@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<main>
+  <section class="section">
+    <div class="container">
+
+      {% include "components/message.html" with message=message %}
+
+      <div class="has-text-centered" id="services-text-container">
+        <h1 class="title is-1">{{cabinet}}</h1>
+        <h4 class="subtitle">
+          {{cabinet.description}}
+        </h4>
+      </div>
+      <br>
+      {% if user.is_authenticated %}
+      <div class="notification">
+        <div class="buttons">
+          <a href="{% url 'cabinet_edit' cabinet.id %} " class="button is-warning is-medium">
+            <span>Редактировать</span>
+          </a>
+          {% if shelf.id != 8 %}
+          <a class="button is-danger is-medium js-modal-trigger" data-target="modal-js-example">
+            <span class="icon is-small">
+              <i class="fas fa-times"></i>
+            </span>
+            <span>Удалить</span>
+            {% endif %}
+          </a>
+        </div>
+      </div>
+      {% endif %}
+
+      <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+        <ul>
+          <li><a href="{% url 'index' %}">Главная</a></li>
+          <li class="is-active"><a href="{% url 'cabinet_show' cabinet.id %}">{{cabinet}}</a></li>
+        </ul>
+      </nav>
+      {% for chunks in shelfs %}
+      <div class="row columns is-multiline">
+        {% for shelf in chunks %}
+        <div class="column is-4">
+          <a href="{% url 'show_shelf' shelf.id %}">
+            <div class="card">
+              <div class="card-content">
+                <h4 class="title is-4 has-text-centered">{{shelf}}</h3>
+              </div>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+  </section>
+</main>
+
+<div id="modal-js-example" class="modal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="box">
+      <div class="block">
+        <p> Вы действительно хотите удалить этот шкаф?</p>
+      </div>
+      <div class="buttons">
+        <a href="{% url 'cabinet_delete' cabinet.id %}" class="button is-danger">Да, удалить</a>
+        <button class="button" onclick="closeWindow($('#modal-js-example'))"> Отмена </button>
+      </div>
+    </div>
+  </div>
+
+  <button class="modal-close is-large" aria-label="close"></button>
+</div>
+{% endblock %}
