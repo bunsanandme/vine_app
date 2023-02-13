@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container">
+<main>
     <section class="section">
-        <div class="container is-fluid">
-
+      <div class="container">
             {% include "../components/message.html" with message=message %}
 
             <div class="has-text-centered">
@@ -19,10 +18,11 @@
                 </nav>
             </div>
             <br>
+
             {% for chunks in page_obj.object_list %}
             <div class="row columns is-multiline">
                 {% for shelf in chunks %}
-                <div class="column is-4">
+                <div class="column is-4 is-mobile">
                     <div class="card">
                         <div class="card-content">
                             <h4 class="title is-4 has-text-centered" style="height: 30px">{{shelf}}</h4>
@@ -41,6 +41,6 @@
 
         </div>
     </section>
-</div>
+</main>
 
 {% endblock %}

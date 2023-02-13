@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 
@@ -16,6 +17,7 @@ from django.http import HttpResponse
 from django.db.models import Q
 
 from docx import *
+import os
 
 from .models import Wine, Shelf, Cabinet
 from .forms import UserRegisterForm, WineForm, FileUploadForm
@@ -33,7 +35,6 @@ def parse_docx(filename):
             data = [cell.text for cell in row.cells]
             table_dict[f"{data[0]}"] = data[1]
         data_dict.append(table_dict)
-    print(data_dict)
     return data_dict
 
 
@@ -272,10 +273,12 @@ def profile(request):
     wines = Wine.objects.all()
     shelfs = Shelf.objects.all()
     cabinets = Cabinet.objects.all()
+    clients = User.objects.filter(groups__name='Clients')
     wines_redacted = Wine.objects.filter(shelf_id=Shelf.objects.get(id=8))
     context = {"wines": wines, 
                "shelfs": shelfs,
                "cabinets": cabinets,
+               "clients": clients,
                "wines_redacted": wines_redacted}
     
     return render(request, 'profile.html', context=context)

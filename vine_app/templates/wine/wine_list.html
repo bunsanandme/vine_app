@@ -1,62 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
-
-<div class="container">
+<main>
   <section class="section">
-    <div class="container is-fluid">
-
+    <div class="container">
       {% include "../components/message.html" with message=message %}
 
       <div class="has-text-centered">
-        <h1 class="title is-1">{{ title }}</h1>
+        <h1 class="title is-1">Все вина</h1>
         <br>
         <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
           <ul>
             <li><a href="{% url 'index' %}">Главная</a></li>
             <li><a href="{% url 'profile' %}">Профиль</a></li>
-            <li class="is-active"><a href="#" aria-current="page">{{title}}</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Все вина</a></li>
           </ul>
         </nav>
-        <form method="GET" action="{% url 'search' %}">
-          <div class="field has-addons">
-            <div class="control " style="width: 190%">
-              <input class="input" name="search" type="text">
-            </div>
-            <div class="control">
-              <input type="submit" class="button is-info" value="Поиск">
+      </div>
+      <br>
+
+      {% for chunks in page_obj.object_list %}
+      <div class="row columns is-multiline">
+        {% for wine in chunks %}
+        <div class="column is-4">
+          <div class="card">
+            <div class="card-content">
+              <h4 class="title is-4 has-text-centered" style="height: 54px">{{wine}}</h4>
+              <p>Полка: <b>{{wine.shelf_id}}</b></p>
+              <br>
+              <div class="buttons is-centered">
+                <a href="{% url 'wine_edit' wine.wine_id%}" class="button is-warning">Редактировать</a>
+                <a href="{% url 'wine_delete' wine.wine_id %}" class="button is-danger">Удалить</a>
+              </div>
             </div>
           </div>
-        </form>
+        </div>
+        {% endfor %}
       </div>
+      {% endfor %}
+
+      {% include "../components/pagination.html" with page_obj=page_obj %}
 
     </div>
-</div>
-</div>
-<br>
-{% for chunks in page_obj.object_list %}
-<div class="row columns is-multiline">
-  {% for wine in chunks %}
-  <div class="column is-4">
-    <div class="card">
-      <div class="card-content">
-        <h4 class="title is-4 has-text-centered" style="height: 54px">{{wine}}</h3>
-          <p>Полка: <b>{{wine.shelf_id}}</b></p>
-          <br>
-          <div class="buttons is-centered">
-            <a href="{% url 'wine_edit' wine.wine_id%}" class="button is-warning">Редактировать</a>
-            <a href="{% url 'wine_delete' wine.wine_id %}" class="button is-danger">Удалить</a>
-          </div>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
-</div>
-{% endfor %}
-
-{% include "../components/pagination.html" with page_obj=page_obj %}
-
-</div>
-</section>
-</div>
+  </section>
+</main>
 
 {% endblock %}
