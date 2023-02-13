@@ -1,6 +1,6 @@
 {% if messages %}
 {% for message in messages %}
-<article {% if message.tags %} class="notification is-{{ message.tags }}" {% endif %}>
+<article {% if message.tags %} class="notification is-{{ message.tags }}" {% endif %} style="animation: ani 1s forwards;">
     {% autoescape off %}
     <p><strong>{{message}}</strong></p>
     {% endautoescape %}

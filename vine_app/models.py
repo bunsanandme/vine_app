@@ -1,11 +1,13 @@
 from datetime import datetime
 
+from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 
 
 class Cabinet(models.Model):
+    client = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     title = models.CharField(max_length=50, default="Шкаф")
     description = models.TextField(default="Описание винного шкафа дополнительно")
 

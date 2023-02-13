@@ -41,6 +41,7 @@
       </nav>
 
       <br />
+      {% if page_obj.object_list %}
       {% for chunks in page_obj.object_list %}
       <div class="row columns is-multiline">
         {% for wine in chunks %}
@@ -61,7 +62,13 @@
         {% endfor %}
       </div>
       {% endfor %}
-
+      {% else %}
+      <h4 class="title is-4 has-text-centered">
+        <p> Нет вин на этой полке</p>
+        <br>
+      </h4>
+      
+      {% endif %}
       {% include "../components/pagination.html" with page_obj=page_obj %}
 
     </div>

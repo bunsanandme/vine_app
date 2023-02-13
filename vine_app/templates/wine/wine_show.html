@@ -32,26 +32,26 @@
 
             <div class="columns is-vcentered is-multiline">
                 <div class="column is-6-tablet is-3-desktop">
-                    <h1 class="is-size-3-mobile is-size-1-desktop title" style="width: 375px">{{wine.wine_name}}</h1>
+                    <h1 class="is-size-3-mobile is-size-1-desktop title" id="page_left" style="width: 375px">{{wine.wine_name}}</h1>
                     <br>
-                    <h2 class="is-size-3-mobile is-size-2-desktop subtitle">{{wine.winery}}</h2>
-                    <p>{{wine.taste}}</p>
+                    <h2 class="is-size-3-mobile is-size-2-desktop subtitle" id="page_left">{{wine.winery}}</h2>
+                    <p id="page_left">{{wine.taste}}</p>
                 </div>
-                <div class="column is-6-tablet is-5-desktop has-text-centered">
+                <div class="column is-6-tablet is-5-desktop has-text-centered" style="animation: ani 2s forwards;">
                     <img src="{{wine.wine_image.url}}" alt="Бутылка вина" class="px-6">
                 </div>
                 <div class="column is-12-tablet is-4-desktop">
-                    <div class="is-size-4 mb-4">Виноград сорта "{{wine.grape}}"</div>
-                    <p class="mb-4">{{wine.fragrance}}</p>
+                    <div class="is-size-4 mb-4" id="page_left">Виноград сорта "{{wine.grape}}"</div>
+                    <p class="mb-4" id="page_left">{{wine.fragrance}}</p>
                     <br><br>
-                    <div class="is-size-4 mb-4">Бутылок в наличии: {{wine.amount}}</div>
+                    <div class="is-size-4 mb-4" id="page_left">Бутылок в наличии: {{wine.amount}}</div>
                 </div>
 
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" style="animation: ani 2s forwards;">
         <div class="container">
             <div class="columns is-8 is-variable">
                 <div class="column is-7-tablet">
