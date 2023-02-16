@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% load templatetagname %}
 <main>
   <section class="section">
     <div class="container">
@@ -15,21 +16,21 @@
       <br>
 
       {% if user.is_authenticated %}
+      {% if not request.user|has_group:"Clients" %} 
       <div class="notification">
         <div class="buttons">
           <a href="{% url 'shelf_edit' shelf.id %} " class="button is-warning is-medium">
             <span>Редактировать</span>
           </a>
-          {% if shelf.id != 8 %}
           <a class="button is-danger is-medium js-modal-trigger" data-target="modal-js-example">
             <span class="icon is-small">
               <i class="fas fa-times"></i>
             </span>
             <span>Удалить</span>
-            {% endif %}
           </a>
         </div>
       </div>
+      {% endif %}
       {% endif %}
 
       <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">

@@ -1,8 +1,9 @@
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.contrib.messages.views import SuccessMessageMixin
 
 from django.utils.decorators import method_decorator
@@ -19,8 +20,11 @@ from django.db.models import Q
 from docx import *
 import os
 
-from .models import Wine, Shelf, Cabinet
-from .forms import UserRegisterForm, WineForm, FileUploadForm
+from .models import Wine, Shelf, Cabinet, Profile
+from .forms import UserRegisterForm, WineForm, FileUploadForm, ProfileForm
+
+
+
 
 def partition(l, n):
     for i in range(0, len(l), n):
@@ -43,7 +47,7 @@ class LoginView(SuccessMessageMixin, LoginView):
     template_name = 'auth/login.html'
     
     def form_valid(self, form):
-        messages.add_message(self.request, messages.SUCCESS, f"Добро пожаловать, сомелье!")
+        messages.add_message(self.request, messages.SUCCESS, f"Добро пожаловать, {self.request.POST['username']} !")
         if self.request.POST.get('next'):
             valuenext = self.request.POST.get('next')
         else:
@@ -56,21 +60,6 @@ class LoginView(SuccessMessageMixin, LoginView):
         messages.error(self.request, "Логин или пароль неверны")
         return self.render_to_response(self.get_context_data(form=form))
 
-def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Создан аккаунт {username}!')
-            return redirect('home')
-        else:
-            form = UserRegisterForm()
-            messages.info(request, "Пароли не совпадают! Проверить правильность введения")
-            return render(request, 'register.html', {'form': form})
-    else:
-        form = UserRegisterForm()
-    return render(request, 'auth/register.html', {'form': form})
 
 class LogoutView(LogoutView):
     def dispatch(self, request, *args, **kwargs):
@@ -83,7 +72,99 @@ def relogin(request):
     return redirect("login")
 
 
+@login_required
+def client_show(request, id):
+    client = User.objects.get(id=id)
+    cabinets = list(Cabinet.objects.filter(client=client))
+    cabinets = list(partition(cabinets, 3))
+    context = {"client": client,
+               "cabinets": cabinets}
+    return render(request, "client/client_show.html", context=context)
 
+@login_required
+def client_list(request):
+    clients = list(User.objects.filter(groups__name='Clients'))
+    clients = list(partition(clients, 3))
+    p = Paginator(clients, 3)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = p.get_page(page_number)
+    except PageNotAnInteger:
+        page_obj = p.page(1)
+    except EmptyPage:
+        page_obj = p.page(p.num_pages)
+    return render(request, "client/client_list.html", {'page_obj': page_obj})
+
+@login_required
+def client_create(request):
+    if request.method == 'POST':
+        print(request.POST)
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            client = form.save(commit=False)
+            group = Group.objects.get(name='Clients')
+            client.save()
+            client.groups.add(group)
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Создан профиль {username}!')
+            client = User.objects.get(username=username)
+            return redirect(reverse("client_edit", kwargs={"id": client.id}))
+        else:
+            errors = []
+            for field, error in form.errors.items():
+                errors.append(error[0])
+            form = UserRegisterForm()
+            messages.error(request, "\n".join(errors))
+            return render(request, 'client/client_create.html', {'form': form})
+    else:
+        form = UserRegisterForm()
+        profile = ProfileForm()
+    return render(request, 'client/client_create.html', {'form': form})
+
+@method_decorator(login_required, name='dispatch')
+class UserUpdateView(SuccessMessageMixin, UpdateView):
+    model = User
+    pk_url_kwarg = 'id'
+    fields =  ('first_name', 'last_name', 'username', 'email')
+    template_name = "client/client_edit.html"
+    success_message = "Карточка пользователя изменена!"
+    success_url = "profile"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        context['client'] = User.objects.get(id=self.kwargs["id"])
+        context['profile'] = ProfileForm(instance = Profile.objects.get(user=context["client"]))
+        print(context)
+        return context
+    
+    def form_valid(self, form):
+        print(self.request.POST)
+        profile = Profile.objects.get(user=User.objects.get(id = self.kwargs["id"]))
+        profile.phone_number = self.request.POST["phone_number"]
+        profile.address = self.request.POST["address"]
+        profile.save()
+        if self.request.POST["changed_password"]:
+            pswd = self.request.POST["changed_password"]
+            form.instance.password = make_password(pswd)
+        super().form_valid(form)
+        pk = self.kwargs["id"]
+        return redirect(reverse("client_show", kwargs={"id": pk}))
+
+@method_decorator(login_required, name='dispatch')
+class UserDeleteView(SuccessMessageMixin, DeleteView):
+    model = User
+
+    def get(self, request, *args, **kwargs):
+        obj = get_object_or_404(User, id=self.kwargs.get('id'))
+        obj_profile = get_object_or_404(Profile, user=obj)
+        obj_profile.delete()
+        messages.success(request, 'Карточка пользователя удалена!')
+        obj.delete()
+        return redirect('client_list')
+
+
+@login_required
 def create_wine(request):
     if request.method == 'POST':
         if 'submit_form' in request.POST:
@@ -145,13 +226,14 @@ class WineUpdateView(SuccessMessageMixin, UpdateView):
         pk = self.kwargs["wine_id"]
         return reverse("show_wine", kwargs={"wine_id": pk})
 
+@login_required
 def show_wine(request, wine_id):
     wine = Wine.objects.get(wine_id=wine_id)
     wine_fun_facts = [item for item in wine.fun_facts.replace("\r", "").split("\n") if item]
     return render(request, "wine/wine_show.html", {"wine": wine, "wine_fun_facts": wine_fun_facts, "item": "wine"})
 
 
-
+@login_required
 def show_shelf(request, id):
     shelf = Shelf.objects.get(id=id)
     wines = list(Wine.objects.filter(shelf_id=shelf))
@@ -219,7 +301,7 @@ class ShelfDeleteView(SuccessMessageMixin, DeleteView):
 @method_decorator(login_required, name='dispatch')
 class CabinetCreateView(SuccessMessageMixin, CreateView):
     model = Cabinet
-    fields =  "__all__"
+    fields =  ('client','title', 'description')
     success_message = "Шкаф создан успешно!"
     
     def get_success_url(self):
@@ -233,7 +315,7 @@ class CabinetCreateView(SuccessMessageMixin, CreateView):
 class CabinetUpdateView(SuccessMessageMixin, UpdateView):
     model = Cabinet
     pk_url_kwarg = 'id'
-    fields =  ('title', 'description')
+    fields =  ('client','title', 'description')
     template_name = "cabinet/cabinet_edit.html"
     success_message = "Шкаф изменен!"
 
@@ -251,6 +333,7 @@ class CabinetUpdateView(SuccessMessageMixin, UpdateView):
         pk = self.kwargs["id"]
         return reverse("cabinet_show", kwargs={"id": pk})
 
+@login_required
 def show_cabinet(request, id):
     cabinet = Cabinet.objects.get(id=id)
     shelfs = Shelf.objects.filter(cabinet=cabinet.id)
@@ -270,21 +353,29 @@ class CabinetDeleteView(SuccessMessageMixin, DeleteView):
 
 @login_required
 def profile(request):
-    wines = Wine.objects.all()
-    shelfs = Shelf.objects.all()
-    cabinets = Cabinet.objects.all()
-    clients = User.objects.filter(groups__name='Clients')
-    wines_redacted = Wine.objects.filter(shelf_id=Shelf.objects.get(id=8))
-    context = {"wines": wines, 
-               "shelfs": shelfs,
-               "cabinets": cabinets,
-               "clients": clients,
-               "wines_redacted": wines_redacted}
+    if request.user.is_superuser:
+        wines = Wine.objects.all()
+        shelfs = Shelf.objects.all()
+        cabinets = Cabinet.objects.all()
+        clients = User.objects.filter(groups__name='Clients')
+        wines_redacted = Wine.objects.filter(shelf_id=Shelf.objects.get(id=8))
+        context = {"wines": wines, 
+                "shelfs": shelfs,
+                "cabinets": cabinets,
+                "clients": clients,
+                "wines_redacted": wines_redacted}
     
-    return render(request, 'profile.html', context=context)
+        return render(request, 'admin_profile.html', context=context)
+    else:
+        client = User.objects.get(username=request.user.username)
+        return redirect(reverse("client_show", kwargs={"id": client.id}))
 
+@login_required
 def homepage(request):
-    cabinets = list(Cabinet.objects.all())
+    if request.user.is_superuser:
+        cabinets = list(Cabinet.objects.all())
+    else:
+        cabinets = list(Cabinet.objects.filter(client=request.user.id))  
     cabinets = list(partition(cabinets, 3))
     return render(request, "homepage.html", {'cabinets': cabinets})
 
@@ -378,3 +469,12 @@ def cabinet_list(request):
     except EmptyPage:
         page_obj = p.page(p.num_pages)
     return render(request, "cabinet/cabinet_list.html", {'page_obj': page_obj})
+
+def fastlink(request):
+    import rsa
+    username = request.GET["code"]
+    user = User.objects.get(id=id)
+    if user is not None:
+        login(request, user)
+        return redirect("profile")
+    

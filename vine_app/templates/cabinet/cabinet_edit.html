@@ -23,6 +23,12 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="field">
+                    <div class="field">
+                        <label class="label">Клиент-владелец</label>
+                        <div class="control">
+                            {% render_field form.client class="input" style="width: 500px" %}
+                        </div>
+                    </div>
                     <label class="label">Название шкафа</label>
                     <div class="control">
                         {% render_field form.title class="input" style="width: 500px" %}

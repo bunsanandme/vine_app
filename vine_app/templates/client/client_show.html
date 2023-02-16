@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block content %}
+{% load templatetagname %}
+<main>
+    <section class="section">
+        <div class="container">
+
+            {% include "../components/message.html" with message=message %}
+
+            {% if user.is_authenticated %}
+            {% if not request.user|has_group:"Clients" %} 
+            <div class="notification">
+                <a href="{% url 'client_edit' client.id %}" class="button is-warning is-medium">
+                    <span>Редактировать</span>
+                </a>
+                <a class="button is-danger is-medium js-modal-trigger" data-target="modal-js-example">
+                    <span class="icon is-small">
+                        <i class="fas fa-times"></i>
+                    </span>
+                    <span>Удалить</span>
+                </a>
+            </div>
+            {% endif %}
+            {% endif %}
+
+            <section class="hero is-blue welcome is-small" style="background-color: #576490">
+                <div class="hero-body">
+                    <div class="container">
+                        <h1 class="title is-white">
+                            {{client.profile}}
+                        </h1>
+                    </div>
+                </div>
+            </section>
+
+                  <div class="columns has-same-height is-gapless">
+                    <div class="column">
+                      <div class="card">
+                        <div class="card-content"> 
+                          <div class="content">
+                            <div class="columns is-gapless">
+                                <div class="column">
+                                    <h3 class="title is-5">Контактный телефон</h3>
+                                    <p>{{client.profile.phone_number}}</p>
+                                    <br>
+                                    <h3 class="title is-5">Контактный телефон</h3>
+                                    <p>{{client.profile.phone_number}}</p>
+                                </div>
+                                <div class="column">
+                                    <h3 class="title is-5">Адрес</h3>
+                                    <p>{{client.profile.address}}</p>
+                                    <br>
+                                    <h3 class="title is-5">Дата регистрации</h3>
+                                    <p>{{client.date_joined}}</p>
+                                </div>
+                            </div>
+                          </div>
+                          <br>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                {% if not request.user|has_group:"Clients" %} 
+              
+                <!-- Portfolio -->
+                <section class="section" id="portfolio">
+                  <div class="container">
+                    <div class="section-heading">
+                        <div class="has-text-centered">
+                            <h3 class="title is-2">Винная комната</h3>
+                        </div>
+                    </div>
+                    <br>
+                    
+                    {% for chunks in cabinets %}
+                    <div class="row columns is-multiline">
+                      {% for cabinet in chunks %}
+                      <div class="column is-4">
+                        <a href="{% url 'cabinet_show' cabinet.id %}">
+                          <div class="card">
+                            <div class="card-content">
+                              <h4 class="title is-4 has-text-centered" style="height:54px">{{cabinet}}</h3>
+                              
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    {% endfor %}
+
+                    
+                 
+                <!-- Contact -->
+                <section class="section" id="contact">
+                  <div class="container">
+                    <div class="has-text-centered">
+                        <h3 class="title is-2">Контакты</h3>
+                    </div>
+                    <br>
+              
+                    <section class="info-tiles">
+                        <div class="tile is-ancestor has-text-centered">
+                            <div class="tile is-parent">
+                                <article class="tile is-child box">
+                                    <p class="subtitle">WhatsApp</p>
+                                </article>
+                            </div>
+                            <div class="tile is-parent">
+                                <article class="tile is-child box">
+                                    <p class="subtitle">Telegram</p>
+                                </article>
+                            </div>
+                            <div class="tile is-parent">
+                                <article class="tile is-child box">
+                                    <p class="subtitle">Звонок</p>
+                                </article>
+                            </div>
+                            <div class="tile is-parent">
+                                <article class="tile is-child box">
+                                    <p class="subtitle">Написать письмо</p>
+                                </article>
+                            </div>
+                        </div>
+                    </section>
+              
+                  </div>
+                </section>
+
+            </div>
+
+            {% endif %}
+            <div id="modal-js-example" class="modal">
+              <div class="modal-background"></div>
+      
+              <div class="modal-content">
+                  <div class="box">
+                      <div class="block">
+                          <p> Вы действительно хотите удалить эту карточку клиента?</p>
+                      </div>
+                      <div class="buttons">
+                          <a href="{% url 'client_delete' client.id %}" class="button is-danger">Да, удалить</a>
+                          <button class="button" onclick="closeWindow($('#modal-js-example'))"> Отмена </button>
+                      </div>
+                  </div>
+              </div>
+      
+              <button class="modal-close is-large" aria-label="close"></button>
+            </div>
+    </section>
+</main>
+
+{% endblock %}

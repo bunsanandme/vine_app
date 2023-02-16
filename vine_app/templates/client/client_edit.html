@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<main>
+    <section class="section">
+        <div class="container">
+
+            {% include "../components/message.html" with message=message %}
+
+            <div class="has-text-centered">
+                <h1 class="title is-1">Редактировать карточку клиента</h1>
+            </div>
+
+            <br>
+
+            <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
+                <ul>
+                    <li><a href="{% url 'index' %}">Главная</a></li>
+                    <li><a href="{% url 'profile' %}">Профиль</a></li>
+                    <li><a href="{% url 'client_list' %}">Все клиенты</a></li>
+                    <li><a href="{% url 'client_show' client.id %}">{% if not client.profile %}{{client.profile}} {% else %} {{client}} {% endif %}</a></li>
+                    <li class="is-active"><a href="#" aria-current="page">Редактировать карточку клиента</a></li>
+                </ul>
+            </nav>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Имя</label>
+                            <div class="control">
+                                {% render_field form.first_name class="input" style="width: 500px" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Фамилия</label>
+                            <div class="control">
+                                {% render_field form.last_name class="input" style="width: 500px" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <br>
+
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Логин</label>
+                            <div class="control">
+                                {% render_field form.username class="input" style="width: 500px;" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Изменить пароль</label>
+                            <div class="control">
+                                <input name="changed_password" class="input" style="width: 500px;"></input>
+                                <p class="help">Оставьте это поле пустым для сохранения пароля</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <br>
+
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                {% render_field form.email class="input" style="width: 500px;" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label">Номер телефона</label>
+                            <div class="control">
+                                {% render_field profile.phone_number class="input" style="width: 500px;" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Адрес</label>
+                    <div class="control">
+                        {% render_field profile.address class="input" style="width: 500px;" %}
+                    </div>
+                </div>
+
+                <br>
+                <input type="submit" class="button is-success" value="Изменить">
+
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}

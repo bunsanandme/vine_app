@@ -3,7 +3,29 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models.signals import post_save
 from django.urls import reverse
+
+from django.dispatch import receiver
+from phonenumber_field.modelfields import PhoneNumberField
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = PhoneNumberField(blank=True)
+    address = models.CharField(max_length=150, blank=True)
+
+    def __str__(self):
+        return self.user.first_name + " " + self.user.last_name
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 class Cabinet(models.Model):

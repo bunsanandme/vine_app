@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% load templatetagname %}
 
 <div class="container">
     <section class="section">
@@ -8,6 +9,7 @@
             {% include "../components/message.html" with message=message %}
 
             {% if user.is_authenticated %}
+            {% if not request.user|has_group:"Clients" %} 
             <div class="notification">
                 <a href="{% url 'wine_edit' wine.wine_id %}" class="button is-warning is-medium">
                     <span>Редактировать</span>
@@ -20,6 +22,7 @@
                 </a>
             </div>
             {% endif %}
+            {% endif %}
 
             <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
                 <ul>
@@ -29,6 +32,8 @@
                     <li class="is-active"><a href="#" aria-current="page">{{wine}}</a></li>
                 </ul>
             </nav>
+            
+            <br>
 
             <div class="columns is-vcentered is-multiline">
                 <div class="column is-6-tablet is-3-desktop">

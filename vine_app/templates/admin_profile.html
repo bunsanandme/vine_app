@@ -7,6 +7,9 @@
             <section class="hero is-blue welcome is-small" style="color: #576490">
                 <div class="hero-body">
                     <div class="container">
+
+                        {% include "components/message.html" with message=message %}
+
                         <h1 class="title">
                             Добрый день, {{user.username}}!
                         </h1>
@@ -79,6 +82,11 @@
                                         </tr>
                                         <tr>
                                             <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'client_list' %}"><strong>Просмотреть всех
+                                                        клиентов</strong></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
                                             <td><a href="{% url 'editable_wine_list' %}"><strong>Просмотреть все вина
                                                         для редакции</strong></a></td>
                                         </tr>
@@ -95,6 +103,11 @@
                                         <tr>
                                             <td width="5%"><i class="fa fa-bell-o"></i></td>
                                             <td><a href="{% url 'cabinet_create' %}"><strong>Создать шкаф</strong></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'client_create' %}"><strong>Создать клиента</strong></a>
                                             </td>
                                         </tr>
                                     </tbody>
