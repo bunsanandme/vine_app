@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% load templatetagname %}
+{% load qr_code %}
 <main>
     <section class="section">
         <div class="container">
@@ -61,7 +62,21 @@
                     </div>
                   </div>
                 </section>
+                
+                <section class="section" id="portfolio">
+                    <div class="container">
+                        <div class="columns">
+                            <div class="column">
+                                {% qr_from_text qr_link size="T" image_format="png" error_correction="L" %}
+                            </div>
+                            <div class="column">
+                                Это qr для входа
+                            </div>
+                        </div>
 
+                    
+                    </div>
+                    </section>
                 {% if not request.user|has_group:"Clients" %} 
               
                 <!-- Portfolio -->

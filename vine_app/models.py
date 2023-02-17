@@ -9,6 +9,8 @@ from django.urls import reverse
 from django.dispatch import receiver
 from phonenumber_field.modelfields import PhoneNumberField
 
+import hashlib
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -17,6 +19,10 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.first_name + " " + self.user.last_name
+    
+    def get_code_hash(self):
+        hash_object = hashlib.sha1(self.user.username.encode('utf-8'))
+        return hash_object.hexdigest()
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

@@ -37,7 +37,9 @@ urlpatterns = [
     path("search", views.search, name="search"),
     path("download_example_doc/", views.download_file, name = "download_doc"),
     path("relogin/", views.relogin, name="relogin"),
-    path("fastlink", views.fastlink, name="fastlink")
+    path("fastlink", views.fastlink, name="fastlink"),
+    path("invalid_code", views.invalid_code, name="invalid_code"),
+    path("valid_code", views.valid_code, name="valid_code"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

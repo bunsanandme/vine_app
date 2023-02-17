@@ -77,8 +77,11 @@ def client_show(request, id):
     client = User.objects.get(id=id)
     cabinets = list(Cabinet.objects.filter(client=client))
     cabinets = list(partition(cabinets, 3))
+    qr_link = "http://192.168.0.16:8000/fastlink?code=" + client.profile.get_code_hash()
+    
     context = {"client": client,
-               "cabinets": cabinets}
+               "cabinets": cabinets,
+               "qr_link": qr_link}
     return render(request, "client/client_show.html", context=context)
 
 @login_required
@@ -471,10 +474,16 @@ def cabinet_list(request):
     return render(request, "cabinet/cabinet_list.html", {'page_obj': page_obj})
 
 def fastlink(request):
-    import rsa
-    username = request.GET["code"]
-    user = User.objects.get(id=id)
-    if user is not None:
-        login(request, user)
-        return redirect("profile")
-    
+    code = request.GET["code"]
+    for user in User.objects.all():
+        print(user.profile.get_code_hash())
+        if user.profile.get_code_hash() == code:
+            login(request, user)
+            return redirect("valid_code")
+    return redirect("invalid_code")
+
+def invalid_code(request):
+    return render(request, "auth/invalid_code.html")
+
+def valid_code(request):
+    return render(request, "auth/valid_code.html")

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-6+1xs-_mcd5wz8l4*cke-d+r)1=&qyqe5904q22^tvh0!^u2d5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'crispy_forms',
     'phonenumber_field',
+    'qr_code',
 ]
 
 MIDDLEWARE = [
