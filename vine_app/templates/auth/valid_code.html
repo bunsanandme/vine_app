@@ -1,4 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-    Все ок, можешь заходить
+<main>
+  <section class="section">
+    <div class="container">
+      <div class="has-text-centered">
+        <h4 class="title is-2">Вы успешно вошли как {{request.user.username}}!</h4>
+        <a class="button is-medium is-success" href="{% url 'home' %}">На главную</a>
+      </div>
+    </div>
+  </section>
+</main>
+
 {% endblock %}

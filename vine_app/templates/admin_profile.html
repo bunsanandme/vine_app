@@ -4,21 +4,22 @@
     <section class="section">
         <div class="container">
 
-            <section class="hero is-blue welcome is-small" style="color: #576490">
+            <section class="hero welcome is-small" style="background-color: #576490">
                 <div class="hero-body">
                     <div class="container">
 
                         {% include "components/message.html" with message=message %}
 
-                        <h1 class="title">
+                        <h1 class="title is-white">
                             Добрый день, {{user.username}}!
                         </h1>
-                        <h2 class="subtitle is-white">
-                            <a href="{% url 'relogin' %}"> Сменить пользователя </a>
+                        <h2 class="subtitle">
+                            <a class="is-white" href="{% url 'relogin' %}"> <u>Сменить пользователя</u> </a>
                         </h2>
                     </div>
                 </div>
             </section>
+            <br>
             <section class="info-tiles">
                 <div class="tile is-ancestor has-text-centered">
                     <div class="tile is-parent">
@@ -47,18 +48,118 @@
                     </div>
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title">{{ wines_redacted|length }}</p>
-                            <p class="subtitle">Вина для редакции</p>
+                            <p class="title">{{wine_amount}}</p>
+                            <p class="subtitle">Количество бутылок</p>
                         </article>
                     </div>
                 </div>
             </section>
             <div class="columns">
                 <div class="column is-6">
+                    <br>
                     <div class="card events-card">
                         <header class="card-header">
                             <p class="card-header-title">
-                                Действия
+                                Прочее
+                            </p>
+                        </header>
+                        <div class="card-table">
+                            <div class="content">
+                                <table class="table is-fullwidth">
+                                    <tbody>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'editable_card_list' %}"><strong>Просмотреть все карточки
+                                                        для редакции</strong></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card events-card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Клиенты
+                            </p>
+                        </header>
+                        <div class="card-table">
+                            <div class="content">
+                                <table class="table is-fullwidth">
+                                    <tbody>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'client_list' %}"><strong>Просмотреть всех
+                                                        клиентов</strong></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'client_create' %}"><strong>Создать клиента</strong></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card events-card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Шкафы
+                            </p>
+                        </header>
+                        <div class="card-table">
+                            <div class="content">
+                                <table class="table is-fullwidth">
+                                    <tbody>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'cabinet_list' %}"><strong>Просмотреть все
+                                                        шкафы</strong></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'cabinet_create' %}"><strong>Создать шкаф</strong></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card events-card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Полки
+                            </p>
+                        </header>
+                        <div class="card-table">
+                            <div class="content">
+                                <table class="table is-fullwidth">
+                                    <tbody>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'shelfs_list' %}"><strong>Просмотреть все
+                                                        полки</strong></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
+                                            <td><a href="{% url 'shelf_create' %}"><strong>Создать полку</strong></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="card events-card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Вина
                             </p>
                         </header>
                         <div class="card-table">
@@ -72,43 +173,8 @@
                                         </tr>
                                         <tr>
                                             <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                            <td><a href="{% url 'shelfs_list' %}"><strong>Просмотреть все
-                                                        полки</strong></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                            <td><a href="{% url 'cabinet_list' %}"><strong>Просмотреть все
-                                                        шкафы</strong></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                            <td><a href="{% url 'client_list' %}"><strong>Просмотреть всех
-                                                        клиентов</strong></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                            <td><a href="{% url 'editable_wine_list' %}"><strong>Просмотреть все вина
-                                                        для редакции</strong></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
                                             <td><a href="{% url 'wine_create' %}"><strong>Создать карточку
                                                         вина</strong></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                            <td><a href="{% url 'shelf_create' %}"><strong>Создать полку</strong></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                            <td><a href="{% url 'cabinet_create' %}"><strong>Создать шкаф</strong></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td width="5%"><i class="fa fa-bell-o"></i></td>
-                                            <td><a href="{% url 'client_create' %}"><strong>Создать клиента</strong></a>
-                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -117,6 +183,7 @@
                     </div>
                 </div>
                 <div class="column is-6">
+                    <br>
                     <div class="card">
                         <header class="card-header">
                             <p class="card-header-title">

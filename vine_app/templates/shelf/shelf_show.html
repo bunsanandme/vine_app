@@ -8,7 +8,7 @@
       {% include "../components/message.html" with message=message %}
 
       <div class="has-text-centered">
-        <h1 class="title is-1">{{shelf}}</h1>
+        <h1 class="title is-1">{{shelf.get_title}}</h1>
         <h4 class="subtitle">
           {{shelf.description}}
         </h4>

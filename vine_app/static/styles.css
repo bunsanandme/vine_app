@@ -186,3 +186,15 @@
 #tab-content {
     animation: ani 1s forwards;
 }
+
+.is-success {
+  background-color: #04a777 !important;
+}
+
+.is-warning {
+  background-color: #FFBE0B !important;
+}
+
+.is-danger {
+  background-color: #ff1f1f !important;
+}

@@ -47,7 +47,7 @@
           <a href="{% url 'show_shelf' shelf.id %}">
             <div class="card">
               <div class="card-content">
-                <h4 class="title is-4 has-text-centered" style="height:54px">{{shelf}}</h3>
+                <h4 class="title is-4 has-text-centered" style="height:54px">{{shelf.get_title}}</h3>
               </div>
             </div>
           </a>

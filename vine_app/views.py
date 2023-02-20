@@ -15,7 +15,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.forms.widgets import FileInput, Textarea
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
-from django.db.models import Q
+from django.db.models import Q, Sum
 
 from docx import *
 import os
@@ -361,12 +361,12 @@ def profile(request):
         shelfs = Shelf.objects.all()
         cabinets = Cabinet.objects.all()
         clients = User.objects.filter(groups__name='Clients')
-        wines_redacted = Wine.objects.filter(shelf_id=Shelf.objects.get(id=8))
+        wine_amount = Wine.objects.all().aggregate(Sum('amount'))["amount__sum"]
         context = {"wines": wines, 
                 "shelfs": shelfs,
                 "cabinets": cabinets,
                 "clients": clients,
-                "wines_redacted": wines_redacted}
+                "wine_amount": wine_amount}
     
         return render(request, 'admin_profile.html', context=context)
     else:
@@ -398,7 +398,7 @@ def download_file(request):
 
 @login_required
 def wine_list(request):
-    wines = list(Wine.objects.exclude(shelf_id=Shelf.objects.get(id=8)))
+    wines = list(Wine.objects.exclude(shelf_id__isnull=True))
     wines = list(partition(wines, 3))
     p = Paginator(wines, 3)
     page_number = request.GET.get('page')
@@ -411,43 +411,31 @@ def wine_list(request):
     return render(request, "wine/wine_list.html", {'page_obj': page_obj, 'title': "Все вина"})
 
 @login_required
-def editable_wine_list(request):
-    wines = list(Wine.objects.filter(shelf_id=8))
-    wines = list(partition(wines, 3))
-    p = Paginator(wines, 3)
-    page_number = request.GET.get('page')
-    try:
-        page_obj = p.get_page(page_number)
-    except PageNotAnInteger:
-        page_obj = p.page(1)
-    except EmptyPage:
-        page_obj = p.page(p.num_pages)
-    return render(request, "wine/wine_list.html", {'page_obj': page_obj, 'title': "Все вина для редакции"})
-
-@login_required
 def search(request):
     wines = ""
     if request.method == "GET":
         query = request.GET.get('search', None)
         if not query:
-            return redirect("wine_list")
+            wines = Wine.objects.all()
+            shelfs = Shelf.objects.all()
+            cabinets = Cabinet.objects.all()
+            wines = list(partition(wines, 3))
+            shelfs = list(partition(shelfs, 3))
+            cabinets = list(partition(cabinets, 3))
+            return render(request, "all_card_list.html", {'title': f"Все карточки", "wines": wines, "shelfs": shelfs, "cabinets": cabinets})
         else:
             wines = Wine.objects.filter(Q(wine_name__icontains=query))
+            shelfs = Shelf.objects.filter(Q(title__icontains=query))
+            cabinets = Cabinet.objects.filter(Q(title__icontains=query))
         wines = list(partition(wines, 3))
-        p = Paginator(wines, 3)
-        page_number = request.GET.get('page')
-        try:
-            page_obj = p.get_page(page_number)
-        except PageNotAnInteger:
-            page_obj = p.page(1)
-        except EmptyPage:
-            page_obj = p.page(p.num_pages)
-        return render(request, "wine/wine_list.html", {'page_obj': page_obj, 'title': f"Результаты поиска \"{query}\""})
+        shelfs = list(partition(shelfs, 3))
+        cabinets = list(partition(cabinets, 3))
+        return render(request, "all_card_list.html", {'title': f"Результаты поиска \"{query}\"", "wines": wines, "shelfs": shelfs, "cabinets": cabinets})
 
 
 @login_required
 def shelf_list(request):
-    shelfs = list(Shelf.objects.exclude(id=8))
+    shelfs = list(Shelf.objects.all())
     shelfs = list(partition(shelfs, 3))
     p = Paginator(shelfs, 3)
     page_number = request.GET.get('page')
@@ -487,3 +475,14 @@ def invalid_code(request):
 
 def valid_code(request):
     return render(request, "auth/valid_code.html")
+
+@login_required
+def editable_card_list(request):
+    wines = list(Wine.objects.filter(shelf_id__isnull=True))
+    wines = list(partition(wines, 3))
+    shelfs = list(Shelf.objects.filter(cabinet__isnull=True))
+    shelfs = list(partition(shelfs, 3))
+    cabinets = list(Cabinet.objects.filter(client__isnull=True))
+    cabinets = list(partition(cabinets, 3))
+    context = {"wines": wines, "shelfs": shelfs, "cabinets": cabinets, "title": "Все карточки для редакции"}
+    return render(request, "all_card_list.html", context=context)

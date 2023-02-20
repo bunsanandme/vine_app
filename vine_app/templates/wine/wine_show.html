@@ -27,8 +27,9 @@
             <nav class="breadcrumb is-centered is-medium" aria-label="breadcrumbs">
                 <ul>
                     <li><a href="{% url 'index' %}">Главная</a></li>
-                    <li><a href="{% url 'cabinet_show' wine.shelf_id.cabinet.id %}">{{wine.shelf_id.cabinet}}</a></li>
-                    <li><a href="{% url 'show_shelf' wine.shelf_id.id %}">{{wine.shelf_id}}</a></li>
+                    {% if not wine.shelf_id.cabinet or not wine.shelf_id %}<li><a href="{% url 'profile' %}">Профиль</a></li>{% endif %}
+                    {% if wine.shelf_id.cabinet %}<li><a href="{% url 'cabinet_show' wine.shelf_id.cabinet.id %}">{{wine.shelf_id.cabinet}}</a></li>{% endif %}
+                    {% if wine.shelf_id %}<li><a href="{% url 'show_shelf' wine.shelf_id.id %}">{{wine.shelf_id.get_title}}</a></li>{% endif %}
                     <li class="is-active"><a href="#" aria-current="page">{{wine}}</a></li>
                 </ul>
             </nav>

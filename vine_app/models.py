@@ -48,11 +48,14 @@ class Shelf(models.Model):
     description = models.TextField(default="Представляем коллекцию вин, отобранную со вкусом и знанием своего дела")
 
     def __str__(self):
+        return str(self.cabinet) + ":" + self.title
+    
+    def get_title(self):
         return self.title
 
 class Wine(models.Model):
     wine_id = models.AutoField(primary_key=True)
-    shelf_id = models.ForeignKey(Shelf, on_delete=models.CASCADE, default=0)
+    shelf_id = models.ForeignKey(Shelf, on_delete=models.SET_NULL, default=0, null=True, blank=True)
 
     amount = models.IntegerField(default=0)
     wine_name = models.CharField(max_length=50, default="")

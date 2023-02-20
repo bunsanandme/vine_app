@@ -23,6 +23,7 @@
             <div class="row columns is-multiline">
                 {% for cabinet in chunks %}
                 <div class="column is-4">
+                    <a href="{% url 'cabinet_show' cabinet.id %}">
                     <div class="card">
                         <div class="card-content">
                             <h4 class="title is-4 has-text-centered" style="height: 30px">{{cabinet}}</h4>
@@ -32,6 +33,7 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
                 {% endfor %}
             </div>
